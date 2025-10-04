@@ -1,0 +1,173 @@
+/* 마이페이지 스타일 */
+.mypage_main {
+    background: #f8f9fa;
+    min-height: calc(100vh - 160px);
+    padding: 30px 0;
+}
+
+.mypage_container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.mypage_title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(45deg, #2AC1BC, #4CAF50);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.user_info {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile_section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile_img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user_details h2 {
+    font-size: 2.4rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.user_details p {
+    font-size: 1.4rem;
+    color: #666;
+}
+
+.menu_section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu_section h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.menu_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu_list li {
+    margin-bottom: 15px;
+}
+
+.menu_list a {
+    display: block;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.6rem;
+    transition: all 0.3s;
+    border-left: 4px solid transparent;
+}
+
+.menu_list a:hover {
+    background: #e8f5e8;
+    border-left-color: #2AC1BC;
+    transform: translateX(5px);
+    color: #2AC1BC;
+    font-weight: bold;
+}
+
+.logout_section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.logout_btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: #f44336;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.logout_btn:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+}
+
+/* 반응형 */
+@media (max-width: 767px) {
+    .mypage_container {
+        padding: 0 15px;
+    }
+    
+    .mypage_title {
+        font-size: 2.5rem;
+    }
+    
+    .profile_section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile_img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .user_details h2 {
+        font-size: 2rem;
+    }
+    
+    .menu_section {
+        padding: 20px;
+    }
+    
+    .menu_section h3 {
+        font-size: 1.8rem;
+    }
+    
+    .menu_list a {
+        font-size: 1.4rem;
+        padding: 12px 15px;
+    }
+}
