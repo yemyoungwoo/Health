@@ -12,7 +12,9 @@ main {
 }
 
 .bm_img {
-	width: 100%;
+	width: 80%;
+	max-width: 600px;
+	height: auto;
 }
 
 .login_box .input_aera {

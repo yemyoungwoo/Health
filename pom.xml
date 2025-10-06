@@ -36,6 +36,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        
+        <!-- 유효성 검사 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 
         <!-- ✅ Lombok (버전 명시) -->
         <dependency>
