@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ymw.web.dao.UserDAO">
+
+    <!-- 회원가입 -->
+    <insert id="join" parameterType="ymw.web.dto.Join">
+        INSERT INTO users (username, password, email, nickname, phone, reg_date)
+        VALUES (#{username}, #{password}, #{email}, #{nickname}, #{phone}, SYSDATE)
+    </insert>
+
+    <!-- 중복 체크 -->
+    <select id="overlapCheck" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE 
+        <choose>
+            <when test="valueType == 'username'">
+                username = #{value}
+            </when>
+            <when test="valueType == 'email'">
+                email = #{value}
+            </when>
+            <when test="valueType == 'nickname'">
+                nickname = #{value}
+            </when>
+            <when test="valueType == 'phone'">
+                phone = #{value}
+            </when>
+        </choose>
+    </select>
+
+</mapper>

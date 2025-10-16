@@ -54,7 +54,6 @@ const isSubmit = (function(){
 
 
 function overlapCheck(data) {
-	/*
 	let isUseable = false;
 	$.ajax({
 		url: "/overlapCheck",
@@ -72,7 +71,6 @@ function overlapCheck(data) {
 	});
 	
 	return isUseable;
-	*/
 }
 
 
