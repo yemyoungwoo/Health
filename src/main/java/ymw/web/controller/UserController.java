@@ -24,7 +24,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-
 	@GetMapping("/myPage")
 	public String myPage() {
 		return "user/myPage";
@@ -43,26 +42,23 @@ public class UserController {
 	// form 태그의 메소드 타입이 post타입이라,, 여기서도 post씀
 	@PostMapping("/join")
 	public String joinProc(@Valid Join join, BindingResult bindingResult, Model model) {
-		if(bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			List<FieldError> list = bindingResult.getFieldErrors();
 			Map<String, String> errorMsg = new HashMap<>();
-			for(int i=0;i<list.size();i++) {
-				String field = list.get(i).getField(); 
-				String message = list.get(i).getDefaultMessage(); 
+			for (int i = 0; i < list.size(); i++) {
+				String field = list.get(i).getField();
+				String message = list.get(i).getDefaultMessage();
 				errorMsg.put(field, message);
 			}
 			model.addAttribute("errorMsg", errorMsg);
 			return "user/join";
 		}
-		
+
 		userService.join(join);
-		
+
 		return "redirect:/login";
 	}
-	
-	
-	
-	
+
 	@ResponseBody
 	@GetMapping("/overlapCheck")
 	public int overlapCheck(String value, String valueType) {
@@ -71,7 +67,7 @@ public class UserController {
 		System.out.println(value);
 		System.out.println(valueType);
 		int count = userService.overlapCheck(value, valueType);
-		
+
 		System.out.println(count);
 		return count;
 	}

@@ -6,6 +6,14 @@
 
 <%@ include file="/WEB-INF/view/include/header.jsp" %>
 
+<!-- 로그인 실패 메시지 -->
+<c:if test="${!empty loginFailMsg }">
+    <script type="text/javascript">
+        const msg = "${loginFailMsg}";
+        swal(msg);
+    </script>
+</c:if>
+
 <div class="wrap">
     <main class="login_main">
         <div class="login_container">

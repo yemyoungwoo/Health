@@ -197,7 +197,7 @@ $(".nickname").focusout(function() {
 		isSubmit.setnicknameCheck(true);
 	}
 
-}); // nickname check 
+});
 
 
 

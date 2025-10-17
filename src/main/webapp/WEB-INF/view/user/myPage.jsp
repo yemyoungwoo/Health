@@ -62,7 +62,7 @@
 		    		
 		    		
 		    		<div>
-						<a href="/likes/store">
+						<a href="/likes/gym">
 							<span class="img_box">
 								<img src="/img/icon44.png" alt="찜한 헬스장">
 							</span>
@@ -72,7 +72,7 @@
 		    		
 		    		
 		    		<div>
-						<a href="/orderList">
+						<a href="/gymList">
 							<span class="img_box">
 								<img src="/img/icon55.png" alt="헬스장 문의">
 							</span>
