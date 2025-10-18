@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import ymw.web.dto.Store;
+import ymw.web.dto.StoreDetail;
 import ymw.web.service.StoreService;
 
 @Controller
@@ -23,6 +24,16 @@ public class StoreController {
 		List<Store> storeList = storeService.storeList(category, address1 / 100);
 		model.addAttribute("storeList", storeList);
 		return "store/store";
+	}
+	
+	@GetMapping("/store/detail/{id}")
+	public String storeDetail(@PathVariable long id, Model model) {
+ 
+		StoreDetail storeDetail = storeService.storeDetail(id);
+ 
+		model.addAttribute("store", storeDetail);
+ 
+		return "store/detail";
 	}
 	
 }

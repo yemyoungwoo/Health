@@ -8,5 +8,7 @@ import ymw.web.dto.Store;
 public interface StoreDAO {
 	 
 	List<Store> storeList(Map<String, Object> map);
+
+	Store storeDetail(long storeId);
  
 }

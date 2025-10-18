@@ -8,4 +8,8 @@
 		SELECT * FROM BM_STORE
 	</select>	
 	
+	<select id="storeDetail">
+		SELECT * FROM BM_STORE WHERE ID = #{storeId }
+	</select>
+	
 </mapper>

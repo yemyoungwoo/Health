@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ymw.web.dao.StoreDAO;
 import ymw.web.dto.Store;
+import ymw.web.dto.StoreDetail;
 
 @Service
 public class StoreServiceImp implements StoreService {
@@ -23,6 +24,12 @@ public class StoreServiceImp implements StoreService {
 		map.put("address1", address);
 		
 		return storeDAO.storeList(map);
+	}
+
+	@Override
+	public StoreDetail storeDetail(long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
  
 }
