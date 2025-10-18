@@ -27,11 +27,12 @@ header .admin_page_btn a {
 
 	<header>
 		<div id="header">
-			<a href="/"><img src="/img/로고.png" alt="이미지"> </a>
+<!-- 			<a href="/"><img src="/img/로고.png" alt="이미지"> </a> -->
 
 			<div class="user_menu">
 				<c:if test="${SPRING_SECURITY_CONTEXT == null }">
 					<a href="/login" class="login_btn">로그인</a>
+					<a href="/"class="home_btn">Home</a>
 				</c:if>
 				<c:if test="${SPRING_SECURITY_CONTEXT != null }">
 					<a href="/myPage" class="mypage_btn">마이페이지</a>

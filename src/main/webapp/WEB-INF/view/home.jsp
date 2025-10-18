@@ -99,14 +99,14 @@
 		new daum.Postcode({
 			oncomplete: function(data) {
 				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById('Address1').value = data.zonecode;
-				document.getElementById('Address2').value = data.address;
+				document.getElementById('deleveryAddress1').value = data.zonecode;
+				document.getElementById('deleveryAddress2').value = data.address;
 			}
 		}).open();
 	});
 
 	$(".category li").click(function(){
-		let address1 = $("#Address1").val();
+		let address1 = $("#deleveryAddress1").val();
 		if(!address1) {
 			swal("헬스장 위치를 선택해 주세요");
 			return false;
