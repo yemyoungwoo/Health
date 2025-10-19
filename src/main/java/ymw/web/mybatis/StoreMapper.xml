@@ -3,13 +3,39 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="store">
- 
+
 	<select id="storeList" resultType="Store">
 		SELECT * FROM BM_STORE
 	</select>	
-	
-	<select id="storeDetail">
-		SELECT * FROM BM_STORE WHERE ID = #{storeId }
+
+	<select id="storeDetail" resultType="Store">
+    	SELECT * FROM BM_STORE WHERE ID = #{storeId}
 	</select>
 	
+	<select id="foodList" resultType="Food">
+		SELECT
+		    id,
+		    store_id,
+		    food_name,
+		    food_price,
+		    food_dec,
+		    food_img,
+		    food_thumb
+		FROM
+		    bm_food
+		WHERE
+			STORE_ID = #{id}    
+	</select>
+	
+		<select id="foodOption" resultType="FoodOption">
+		SELECT
+		    id,
+		    food_id,
+		    option_name,
+		    option_price
+		FROM
+		    bm_food_option
+		WHERE
+			food_id = #{foodId }    
+	</select>
 </mapper>

@@ -148,6 +148,34 @@
 	border: none;
 }
 
+/* 체크박스 스타일 - 모든 화면 크기에서 적용 */
+.option_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 체크박스 숨김 */
+.option_box input[type="checkbox"] {
+    display: none;
+}
+
+/* 체크 아이콘 스타일 */
+.option_box i {
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: #ccc !important;  /* 체크 안 된 상태 */
+    margin-right: 5px;
+    transition: color 0.2s ease;
+}
+
+/* 체크 상태일 때 색상 */
+.option_box i.checked {
+    color: #333 !important;  /* 체크된 상태 */
+}
+
 
 
 
@@ -156,7 +184,7 @@
 @media ( max-width :1023px) {
 }
 
-@media ( max-width :767px) {
+@media ( max-width :755px) {
 	.modal {
 		width: 80%;
 		margin-left: -40%;

@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import ymw.web.dto.Food;
+import ymw.web.dto.FoodOption;
 import ymw.web.dto.Store;
 
 @Repository
@@ -23,5 +25,15 @@ public class StoreDAOImp implements StoreDAO {
 	@Override
 	public Store storeDetail(long storeId) {
 		return sql.selectOne("store.storeDetail", storeId);
+	}
+	
+	@Override
+	public List<Food> foodList(long id) {
+		return sql.selectList("store.foodList", id);
+	}
+	
+	@Override
+	public List<FoodOption> foodOption(int foodId) {
+		return sql.selectList("store.foodOption", foodId);
 	}
 }

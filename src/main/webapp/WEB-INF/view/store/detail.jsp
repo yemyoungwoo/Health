@@ -13,17 +13,13 @@
 <%@ include file="/WEB-INF/view/store/storeDetail.jsp"%>
 <!-- 메인 -->
 
-<!-- 푸터 -->
+
+<!-- 메뉴 모달 -->
+<%@ include file="/WEB-INF/view/modal/gym_modal.jsp"%>
+<!-- 메뉴 모달 -->
+
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
-<!-- 푸터 -->
-
-<!-- 메뉴 모달 -->
-<%@ include file="/WEB-INF/view/modal/modal_gym.jsp"%>
-<!-- 메뉴 모달 -->
 
 
-
-
-<script type="text/javascript" src="/js/store/storeDetail.js"></script>
 </body>
 </html>

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ymw.web.dao.StoreDAO;
+import ymw.web.dto.Food;
+import ymw.web.dto.FoodOption;
 import ymw.web.dto.Store;
 import ymw.web.dto.StoreDetail;
 
@@ -27,9 +29,16 @@ public class StoreServiceImp implements StoreService {
 	}
 
 	@Override
-	public StoreDetail storeDetail(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public StoreDetail storeDetail(long storeId) {
+		Store storeInfo = storeDAO.storeDetail(storeId); 
+		List<Food> foodList = storeDAO.foodList(storeId);
+//		List<Review> reviewList = storeDAO.reviewList(storeId);
+		
+		return new StoreDetail(storeInfo, foodList);
 	}
- 
+	
+	@Override
+	public List<FoodOption> foodOption(int foodId) {
+		return storeDAO.foodOption(foodId);
+	}
 }

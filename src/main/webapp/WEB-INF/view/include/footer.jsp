@@ -8,4 +8,6 @@
         <div>이메일 : tkddlektks@gmail.com</div>
     </div>
 </footer>
+  
+<script src="/js/util/util.js"></script>
 

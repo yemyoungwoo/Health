@@ -19,7 +19,6 @@
 	min-height: calc(100vh - 210px);
 }
 
-/* -------------- »ó´Ü °¡°Ô Á¤º¸ -------------- */
 nav {
 	width: 100%;
 	text-align: center;
@@ -46,11 +45,6 @@ nav .inf .store_review_count:after {
 	content: '|';
 }
 
-/* -------------- »ó´Ü °¡°Ô Á¤º¸ -------------- */
-
-/* -------------- Àå¹Ù±¸´Ï -------------- */
-
-/* ¸ğ¹ÙÀÏ Ä«Æ® */
 .m_cart_img {
 	position: fixed;
 	bottom: 3%;
@@ -92,9 +86,6 @@ nav .inf .store_review_count:after {
 	font-weight: 1000;
 	display: none;
 }
-/* ¸ğ¹ÙÀÏ Ä«Æ® */
-
-/* Ä«Æ® ´ã¾ÒÀ»¶§ ¸Ş¼¼Áö */
 .alarm {
 	position: fixed;
 	left: 50%;
@@ -191,9 +182,9 @@ nav .inf .store_review_count:after {
 	margin-top: 10px;
 }
 
-/* -------------- Àå¹Ù±¸´Ï -------------- */
+/* -------------- ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ -------------- */
 
-/* -------------- ¸ŞÀÎ -------------- */
+/* -------------- ï¿½ï¿½ï¿½ï¿½ -------------- */
 main {
 	width: 70%;
 }
@@ -221,17 +212,15 @@ main ul.tab li:hover {
 main ul.tab li.select {
 	background: #30DAD9;
 	color: #fff;
-	/* ¸Ş´ºÅÇ Å¬¸¯½Ã »ö ¹Ù²ñ */
 }
 
-/* ¸Ş´º Á¤º¸ ¸®ºä ÅÇ */
 main ul.menu {
 	padding-bottom: 50px;
 	border: 2px solid #ddd;
 	margin-bottom: 30px;
 }
 
-/* ¸Ş´º ³»¿ë */
+/* ï¿½Ş´ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 main ul.menu li {
 	border-bottom: 1px solid #ddd;
 }
@@ -260,12 +249,9 @@ main ul.menu li .menu_box img {
     object-fit: cover;
 }
 
-/* -------------- ¸ŞÀÎ -------------- */
 
-/* ----------------- Á¤º¸ ÅÇ ----------------- */
 main ul.info {
 	/* display: none; */
-	/* Ä«Ä«¿À Áöµµ ±úÁ®¼­ ½ºÅ©¸³Æ®·Î hideÇÔ */
 	
 }
 
@@ -330,9 +316,6 @@ main ul.info {
 	display: inline-block;
 }
 
-/* ----------------- Á¤º¸ ÅÇ ----------------- */
-
-/* ----------------- ¸®ºä ÅÇ ----------------- */
 main .comment {
 	display: none;
 }
@@ -453,22 +436,20 @@ main .comment li .boss_comment_box {
 	border-radius: 10px;
 	cursor: pointer;
 }
-/* ¸®ºäÅÇ */
 
 
 
-/* ¸Ş´º Å¬¸¯ ¸ğ´Ş */
-.food_modal img {
+.gym_modal img {
 	width: 100%;
 }
 
-.food_modal .menu_name {
+.gym_modal .menu_name {
 	text-align: center;
 	display: block;
 	font-size: 20px;
 }
 
-.food_modal .modal_box>div {
+.gym_modal .modal_box>div {
 	font-size: 1.6rem;
 	width: 95%;
 	margin: 0 auto;
@@ -478,25 +459,25 @@ main .comment li .boss_comment_box {
 	border-bottom: 1px solid #ddd;
 }
 
-.food_modal .modal_box .menu_dec {
+.gym_modal .modal_box .menu_dec {
 	justify-content: center;
 	font-size: 1.8rem;
 }
 
-.food_modal .modal_box .price {
+.gym_modal .modal_box .price {
 	font-weight: bold;
 	font-size: 2rem;
 }
 
-.food_modal .modal_box #option {
+.gym_modal .modal_box #option {
 	display: block;
 }
 
-.food_modal .modal_box #option .fas {
+.gym_modal .modal_box #option .fas {
 	color: #ddd;
 }
 
-.food_modal .amount_box {
+.gym_modal .amount_box {
 	border: 1px solid #ddd;
 	display: flex;
 	width: 150px;
@@ -505,41 +486,41 @@ main .comment li .boss_comment_box {
 	overflow: hidden;
 }
 
-.food_modal .amount_box button {
+.gym_modal .amount_box button {
 	border: none;
 	background: #fff;
 	font-size: 2.2rem;
 	width: 30%;
 }
 
-.food_modal .amount_box #amount {
+.gym_modal .amount_box #amount {
 	text-align: center;
 	border: none;
 	width: 40%;
 }
 
 
-.food_modal .amount .amount_text {
+.gym_modal .amount .amount_text {
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 43px;
 }
 
-.food_modal .modal_box {
+.gym_modal .modal_box {
 	height: calc(100% - 130px);
 }
 
-.food_modal #btn_box {
+.gym_modal #btn_box {
 	height: 90px;
 	
 }
 
-.food_modal #btn_box>div {
+.gym_modal #btn_box>div {
 	text-align: center;
 	height: 45px;
 }
 
-.food_modal .min_delevery {
+.gym_modal .min_delevery {
 	font-size: 1.5rem;
 	margin-top: 5px;
 }
@@ -548,22 +529,22 @@ main .comment li .boss_comment_box {
 	background: #30DAD9;
 }
 
-.food_modal ul {
+.gym_modal ul {
 	font-size: 1.8rem;
 	width: 95%;
 	margin-left: auto;
 }
 
-.food_modal ul .option_box {
+.gym_modal ul .option_box {
 	display: flex;
 	justify-content: space-between;
 }
 
-.food_modal ul .option_box .menu_option {
+.gym_modal ul .option_box .menu_option {
 	display: none;
 }
 
-/*-------¸Ş´º¸®½ºÆ® Å¬¸¯ ¸ğ´Ş ---------*/
+/*-------ï¿½Ş´ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ ---------*/
 @media ( max-width :1023px) {
 	#wrap {
 		width: 95%;
@@ -627,9 +608,11 @@ main .comment li .boss_comment_box {
 		height: 10vh;
 		line-height: 10vh;
 	}
-	
-	
-	
-	
-	
+}
+
+/* detail í˜ì´ì§€ì—ì„œë§Œ footer ìœ„ì¹˜ ì¡°ì • */
+footer {
+	position: relative !important;
+	bottom: auto !important;
+	margin-top: 50px;
 }
