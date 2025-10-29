@@ -95,6 +95,51 @@ $(document).ready(function () {
         });
     }
 
+    // 수량 조절
+    $('.plus').click(function () {
+        const amount = parseInt($('#amount').val());
+        $('#amount').val(amount + 1);
+        calculateTotal();
+    });
+
+    $('.minus').click(function () {
+        const amount = parseInt($('#amount').val());
+        if (amount > 1) {
+            $('#amount').val(amount - 1);
+            calculateTotal();
+        }
+    });
+
+    // 옵션 체크박스 클릭 시 색상 변경 및 총액 계산
+    $(document).off('click', '.option_box i').on('click', '.option_box i', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const icon = $(this);
+        const checkbox = icon.siblings('input[type="checkbox"]').first();
+        
+        if (checkbox.length) {
+            const isChecked = !checkbox.prop('checked');
+            checkbox.prop('checked', isChecked);
+            
+            // 색상 변경 - 인라인 스타일 직접 적용
+            if (isChecked) {
+                icon.addClass('checked');
+                icon.css('color', '#30DAD9');
+                // CSS !important를 우회하기 위해 강제로 style 속성에 직접 설정
+                icon[0].style.setProperty('color', '#30DAD9', 'important');
+            } else {
+                icon.removeClass('checked');
+                icon.css('color', '#ccc');
+                icon[0].style.setProperty('color', '#ccc', 'important');
+            }
+            
+            // 총액 계산
+            calculateTotal();
+        }
+        return false;
+    });
+    
+    // 옵션 로드 후 체크박스 상태에 따라 초기 색상 설정
     function updateOptions(options) {
         const optionList = $('#option ul');
         optionList.empty();
@@ -120,52 +165,42 @@ $(document).ready(function () {
             
             // 모든 체크박스와 아이콘 초기화
             $('.menu_option').prop('checked', false);
-            $('.option_box i').removeClass('checked').css('color', '#ccc');
+            $('.option_box i').each(function() {
+                $(this).removeClass('checked');
+                this.style.setProperty('color', '#ccc', 'important');
+            });
+            
+            // 옵션 로드 후 체크박스 이벤트 재등록 (storeDetail.js의 .off() 이후에 다시 등록)
+            setTimeout(function() {
+                $(document).off('click', '.option_box i').on('click', '.option_box i', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const icon = $(this);
+                    const checkbox = icon.siblings('input[type="checkbox"]').first();
+                    
+                    if (checkbox.length) {
+                        const isChecked = !checkbox.prop('checked');
+                        checkbox.prop('checked', isChecked);
+                        
+                        // 색상 변경 - 인라인 스타일 직접 적용
+                        if (isChecked) {
+                            icon.addClass('checked');
+                            icon[0].style.setProperty('color', '#30DAD9', 'important');
+                        } else {
+                            icon.removeClass('checked');
+                            icon[0].style.setProperty('color', '#ccc', 'important');
+                        }
+                        
+                        // 총액 계산
+                        calculateTotal();
+                    }
+                    return false;
+                });
+            }, 100);
         } else {
             optionList.append('<li>선택 가능한 옵션이 없습니다.</li>');
         }
     }
-
-    // 수량 조절
-    $('.plus').click(function () {
-        const amount = parseInt($('#amount').val());
-        $('#amount').val(amount + 1);
-        calculateTotal();
-    });
-
-    $('.minus').click(function () {
-        const amount = parseInt($('#amount').val());
-        if (amount > 1) {
-            $('#amount').val(amount - 1);
-            calculateTotal();
-        }
-    });
-
-    // 옵션 체크박스 클릭 시 색상 변경
-    $(document).on('click', '.option_box i', function() {
-        console.log('아이콘 클릭됨!');
-        const checkbox = $(this).siblings('input[type="checkbox"]'); // i 옆 input
-        console.log('체크박스 찾음:', checkbox);
-        checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
-        console.log('체크 상태:', checkbox.prop('checked'));
-    });
-
-    // 옵션 체크박스 변경 시 총액 계산 및 색상 변경
-    $(document).on('change', '.menu_option', function () {
-        const checkbox = $(this);
-        const icon = checkbox.siblings('i');
-        
-        // 체크박스 상태에 따라 아이콘 색상 변경
-        if (checkbox.is(':checked')) {
-            icon.addClass('checked');
-            icon.css('color', '#333'); // 강제로 색상 변경
-        } else {
-            icon.removeClass('checked');
-            icon.css('color', '#ccc'); // 강제로 색상 변경
-        }
-        
-        calculateTotal();
-    });
 
     // 총액 계산
     function calculateTotal() {
@@ -181,9 +216,9 @@ $(document).ready(function () {
         $('.total_price').text(total.toLocaleString());
     }
 
-    // 장바구니 담기
-    $('.add_cart').click(function () {
-        alert('장바구니에 담았습니다!');
-        closeModal();
-    });
+     //장바구니 담기 - storeDetail.js에서 처리하므로 주석 처리
+     $('.add_cart').click(function () {
+         alert('장바구니에 담았습니다!');
+         closeModal();
+     });
 });

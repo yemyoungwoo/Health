@@ -20,6 +20,7 @@
 
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 
+<script src="/js/store/storeDetail.js"></script>
 
 </body>
 </html>

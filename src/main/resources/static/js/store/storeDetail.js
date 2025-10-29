@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
 	const minDelevery = Number($("#min_delevery").data("min_delevery"));
-	const deleveryTip = Number($("#delevery_tip").data("delevery_tip"));
+	const deleveryTip = Number($("#delevery_tip").data("delevery_tip")) || 0; // 기본값 0 설정
 	const storeId = $("#store_id").val();
 	const storeName = $("#store_name").data("store_name");
 	
@@ -54,7 +54,7 @@ $(document).ready(function() {
 	
 	
 	// 가게 입장시 카트리스트 불러오기
-	/*(function(){
+	(function(){
 		$.ajax({
 			url: "/cartList",
 			type: "get"
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		.fail(function(){
 			swal("장바구니 정보 에러");
 		})
-	})();*/
+	})();
 	
 	
 
@@ -293,20 +293,35 @@ $(document).ready(function() {
 			
 		// 선택된 추가옵션 가져오기 
 		$("input[name='option']:checked").each(function() {
-			const optionName = $(this).val();
-			const optionId = $(this).siblings(".option_id").val();
-			const optionPrice = $(this).siblings(".option_price").val();  
+			// 옵션 이름 추출: 체크박스가 있는 span의 텍스트에서 체크박스와 아이콘 제외
+			const optionSpan = $(this).parent('span');
+			let optionText = optionSpan.clone().find('input, i').remove().end().text().trim();
 			
-			foodOptionName.push(optionName);
+			const optionId = $(this).siblings(".option_id").val();
+			const optionPrice = parseInt($(this).siblings(".option_price").val()) || 0;
+			
+			foodOptionName.push(optionText);
 			foodOptionId.push(optionId);
 			foodOptionPrice.push(optionPrice);
+			
+			console.log("옵션 수집:", { optionName: optionText, optionId, optionPrice });
 		})
+		
+		console.log("전체 옵션 배열:", { 
+			optionName: foodOptionName, 
+			optionId: foodOptionId, 
+			optionPrice: foodOptionPrice 
+		});
+		
+		// 모달창에서 계산한 총액 가져오기 (모달창과 동일한 계산 결과)
+		const modalTotalPrice = parseInt($('.total_price').text().replace(/,/g, '')) || 0;
 		
 		const data = {
 			foodId : addCart.siblings(".add_cart_food_id").val(),
 			foodName : addCart.siblings(".add_cart_food_name").val(),
 			foodPrice : addCart.siblings(".add_cart_food_price").val(),
 			amount : addCart.parent().siblings(".modal_box").find("#amount").val(),
+			totalPrice : modalTotalPrice,  // 모달창에서 계산한 총액 전송
 			optionName : foodOptionName,
 			optionId : foodOptionId,
 			optionPrice : foodOptionPrice,
@@ -314,6 +329,11 @@ $(document).ready(function() {
 			storeId : storeId, 
 			storeName : storeName
 		}
+		
+		// 디버깅: 전송 데이터 확인
+		console.log("장바구니 추가 데이터:", data);
+		console.log("모달창 총액:", modalTotalPrice);
+		console.log("옵션 가격 배열:", foodOptionPrice);
 		
 		$.ajax({
 			url: "/addCart",

@@ -173,8 +173,9 @@
 
 /* 체크 상태일 때 색상 */
 .option_box i.checked {
-    color: #333 !important;  /* 체크된 상태 */
+    color: #30DAD9 !important;  /* 체크된 상태 */
 }
+
 
 
 
