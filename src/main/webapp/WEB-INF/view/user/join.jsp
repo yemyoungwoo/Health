@@ -34,7 +34,7 @@
 					</div>
 		               
 					<div class="input_aera">
-						<input type=number name="phone" value="" class="phone" placeholder="'-' 없이 입력해 주세요" onkeypress="return lenthCheck(this, 11);" >
+						<input type="text" name="phone" value="" class="phone" placeholder="'-' 없이 입력해 주세요" onkeypress="return lengthCheck(this, 11);" maxlength="11">
 	                    <span class="msg_box">${errorMsg.phone }</span>
 	                </div>
 	                
@@ -43,7 +43,7 @@
         </div>
     </main>
     
-    <script src="/css/js/util/util.js"></script>
-	<script type="text/javascript" src="/css/js/user/join.js"></script>
+    <script src="/js/util/util.js"></script>
+	<script type="text/javascript" src="/js/user/join.js"></script>
 </body>
 </html>

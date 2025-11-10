@@ -7,7 +7,7 @@ const isSubmit = (function(){
 	let emailCheck = false;
 	let nicknameCheck = false;
 	let phoneCheck = false;
-	
+
 	const setUsernameCheck = function(set){
 		usernameCheck = set ? true : false;
 		isSubmit();
@@ -28,7 +28,7 @@ const isSubmit = (function(){
 		phoneCheck = set ? true : false;
 		isSubmit();
 	}
-	
+
 	const isSubmit = function(){
 		if(usernameCheck && passwordCheck && emailCheck && nicknameCheck && phoneCheck) {
 			$(".login_btn").css("background", "#2AC1BC");
@@ -38,7 +38,7 @@ const isSubmit = (function(){
 			return false;
 		}
 	}
-	
+
 	return {
 		setUsernameCheck : setUsernameCheck,
 		setpasswordCheck : setpasswordCheck,
@@ -54,6 +54,7 @@ const isSubmit = (function(){
 
 
 function overlapCheck(data) {
+	
 	let isUseable = false;
 	$.ajax({
 		url: "/overlapCheck",
@@ -69,8 +70,9 @@ function overlapCheck(data) {
 	.fail(function(){
 		alert("에러");
 	});
-	
+
 	return isUseable;
+
 }
 
 
@@ -80,14 +82,14 @@ function pwdCheck() {
 	const password1 = $(".password1").val().replaceAll(" ", "");
 	const password2 = $(".password2").val().replaceAll(" ", "");
 	const msgBox = $(".password2").siblings(".msg_box"); 
-	
+
 	if(password1 && password2) {
 		if(password1.includes(" ")  || password2.includes(" ")) {
 			msgBox.text("비밀번호를 확인해 주세요");
 			isSubmit.setpasswordCheck(false);
 			return;
 		}
-		
+
 		if(password1 != password2) {
 			msgBox.text("비밀번호를 확인해 주세요");
 			isSubmit.setpasswordCheck(false);
@@ -97,7 +99,7 @@ function pwdCheck() {
 			isSubmit.setpasswordCheck(true);
 		}
 	}
-	
+
 }
 
 
@@ -107,25 +109,25 @@ function pwdCheck() {
 $(".username").focusout(function(){
 	const username = $(".username").val().replaceAll(" ", "");
 	const msgBox = $(this).siblings(".msg_box"); 
-	
+
 	if(!username) {
 		msgBox.text("아이디를 입력해주세요");
 		isSubmit.setUsernameCheck(false);
 		return;
 	}
-	
+
 	if(!usernameCheck(username)) {
 		msgBox.text("사용할수 없는 아이디입니다");
 		isSubmit.setUsernameCheck(false);
 		return;
 	}
-	
+
 	const data = {
 		value : username,
 		valueType : "username" 
 	};
-	
-	
+
+
 	if(overlapCheck(data)) {
 		msgBox.text("사용 가능합니다");
 		isSubmit.setUsernameCheck(true);
@@ -188,7 +190,7 @@ $(".nickname").focusout(function() {
 		value: nickname,
 		valueType : "nickname" 
 	};
-	
+
 	if(!overlapCheck(data)){
 		msgBox.text("이미 사용중인 닉네임입니다");
 		isSubmit.setnicknameCheck(false);
@@ -197,7 +199,7 @@ $(".nickname").focusout(function() {
 		isSubmit.setnicknameCheck(true);
 	}
 
-});
+}); // nickname check 
 
 
 
@@ -205,12 +207,12 @@ $(".nickname").focusout(function() {
 $(".phone").focusout(function() {
 	const phone = $(".phone").val();
 	const msgBox = $(this).siblings(".msg_box"); 
-	
+
 	if(!phone) {
 		isSubmit.setphoneCheck(false);
 		return;
 	}
-	
+
 	if(!phoneCheck(phone)) {
 		msgBox.text("휴대폰번호를 확인해 주세요");
 		isSubmit.setphoneCheck(false);

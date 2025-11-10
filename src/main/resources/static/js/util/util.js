@@ -10,12 +10,18 @@ function emailCheck(email) {
 }
 
 function phoneCheck(phone) {
-    const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-    return regPhone.test(phone);
+    // 전화번호에서 하이픈 제거
+    const cleanPhone = phone.replace(/-/g, '');
+    // 010, 011, 016, 017, 018, 019로 시작하는 10~11자리 숫자
+    const regPhone = /^01[0|1|6|7|8|9][0-9]{7,8}$/;
+    return regPhone.test(cleanPhone);
 }
 
 function nicknameCheck(nickname) {
     const regNickname = /^[가-힣a-zA-Z0-9]+$/;
+       if (nickname.length < 4 || nickname.length > 10) {
+        return false;
+    }
     return regNickname.test(nickname);
 }
 

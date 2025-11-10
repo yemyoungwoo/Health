@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BCryptPasswordEncoder pwdEncoder;
 
 	@GetMapping("/myPage")
 	public String myPage() {
@@ -42,6 +46,11 @@ public class UserController {
 	// form 태그의 메소드 타입이 post타입이라,, 여기서도 post씀
 	@PostMapping("/join")
 	public String joinProc(@Valid Join join, BindingResult bindingResult, Model model) {
+		
+		String encPwd = pwdEncoder.encode(join.getPassword());
+		join.setPassword(encPwd);
+		userService.join(join);
+		
 		if (bindingResult.hasErrors()) {
 			List<FieldError> list = bindingResult.getFieldErrors();
 			Map<String, String> errorMsg = new HashMap<>();
