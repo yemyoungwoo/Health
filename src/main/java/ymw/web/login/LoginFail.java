@@ -17,7 +17,15 @@ public class LoginFail implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
         
+        String username = request.getParameter("username");
         System.out.println("로그인 실패: " + exception.getMessage());
+        System.out.println("시도한 사용자명: " + username);
+        System.out.println("예외 클래스: " + exception.getClass().getName());
+        
+        if (exception.getCause() != null) {
+            System.out.println("원인: " + exception.getCause().getMessage());
+        }
+        
         response.sendRedirect("/login?error=true");
     }
 }

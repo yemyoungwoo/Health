@@ -47,4 +47,10 @@
         U.ID = P.USER_ID
     WHERE U.USERNAME = #{username }    
 </select>
+	
+	<update id="updatePassword">
+		UPDATE BM_USER
+		SET PASSWORD = #{password }
+		WHERE USERNAME = #{username }
+	</update>
 </mapper>
