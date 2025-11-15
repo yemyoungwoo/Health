@@ -13,11 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginSuccess implements AuthenticationSuccessHandler {
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException, ServletException {
-        
-        System.out.println("로그인 성공: " + authentication.getName());
-        response.sendRedirect("/");
-    }
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException, ServletException {
+		
+		response.sendRedirect("/myPage");
+	}
 }
