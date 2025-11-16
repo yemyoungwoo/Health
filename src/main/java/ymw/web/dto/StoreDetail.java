@@ -16,5 +16,5 @@ import lombok.ToString;
 public class StoreDetail {
 	private Store storeInfo;
 	private List<Food> foodList;
-//	private List<Review> reviewList;
+	private List<Review> reviewList;
 }

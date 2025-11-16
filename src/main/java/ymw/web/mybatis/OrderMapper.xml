@@ -139,9 +139,9 @@
 			s.store_img as "storeImg",
 			s.store_thumb as "storeThumb",
 			s.delevery_tip as "deleveryTip",
-			CAST(NULL AS VARCHAR2(2000)) as "reviewContent",
-			0 as "score",
-			CAST(NULL AS VARCHAR2(200)) as "reviewImg"
+			r.review_content as "reviewContent",
+			NVL(r.score, 0) as "score",
+			r.review_img as "reviewImg"
 		FROM	bm_order_user o
 		LEFT JOIN (
 			SELECT  ORDER_NUM, 
@@ -150,6 +150,7 @@
 			GROUP BY ORDER_NUM
 		) d ON o.order_num = d.order_num
 		LEFT JOIN bm_store s ON o.store_id = s.id
+		LEFT JOIN bm_review r ON o.order_num = r.order_num
 		WHERE o.user_id = #{userId}
 		ORDER BY o.order_date DESC
 	</select>

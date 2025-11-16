@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ymw.web.dao.StoreDAO;
 import ymw.web.dto.Food;
 import ymw.web.dto.FoodOption;
+import ymw.web.dto.Review;
 import ymw.web.dto.Store;
 import ymw.web.dto.StoreDetail;
 
@@ -32,13 +33,27 @@ public class StoreServiceImp implements StoreService {
 	public StoreDetail storeDetail(long storeId) {
 		Store storeInfo = storeDAO.storeDetail(storeId); 
 		List<Food> foodList = storeDAO.foodList(storeId);
-//		List<Review> reviewList = storeDAO.reviewList(storeId);
+		List<Review> reviewList = storeDAO.reviewList(storeId);
 		
-		return new StoreDetail(storeInfo, foodList);
+		System.out.println("가게 정보 = " + storeInfo);
+		System.out.println("메뉴목록 = " + foodList);
+		System.out.println("댓글목록 = " + reviewList);
+		
+		return new StoreDetail(storeInfo, foodList, reviewList);
 	}
 	
 	@Override
 	public List<FoodOption> foodOption(int foodId) {
 		return storeDAO.foodOption(foodId);
+	}
+	
+	@Override
+	public void reviewWrite(Review review) {
+		storeDAO.reviewWrite(review);
+	}
+	
+	@Override
+	public void reviewModify(Review review) {
+	    storeDAO.reviewModify(review);
 	}
 }

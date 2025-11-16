@@ -102,9 +102,9 @@
     <!-- 푸터 -->
     <!-- 푸터 -->
 	
-<%-- 	<%@ include file="/WEB-INF/view/modal/modal_review.jsp" %> --%>
+	<%@ include file="/WEB-INF/view/modal/modal_review.jsp" %>
 	
-	
+	<script type="text/javascript" src="/js/util/util.js" ></script>
 	<script type="text/javascript" src="/js/order/orderList.js" ></script>
 	
 	

@@ -23,4 +23,18 @@ public class Store {
 	private int deleveryTime;
 	private int deleveryTip;
 	private String storeDes;
+	
+	private float score;
+	private int orderCount;
+	private int reviewCount;
+	private int bossCommentCount;
+	private int likesCount;
+	
+	private int score1; // 리뷰 1점
+	private int score2; // 리뷰 2점
+	private int score3; // 리뷰 3점
+	private int score4; // 리뷰 4점
+	private int score5; // 리뷰 5점	
+	
+	private String isOpen;
 }

@@ -8,9 +8,9 @@
 		SELECT * FROM BM_STORE
 	</select>	
 
-	<select id="storeDetail" resultType="Store">
-    	SELECT * FROM BM_STORE WHERE ID = #{storeId}
-	</select>
+<!-- 	<select id="storeDetail" resultType="Store"> -->
+<!--     	SELECT * FROM BM_STORE WHERE ID = #{storeId} -->
+<!-- 	</select> -->
 	
 	<select id="foodList" resultType="Food">
 		SELECT
@@ -38,4 +38,84 @@
 		WHERE
 			food_id = #{foodId }    
 	</select>
+	
+<insert id="reviewWrite">
+		INSERT INTO BM_REVIEW (
+		    ORDER_NUM
+		    ,STORE_ID
+		    ,REVIEW_CONTENT
+		    ,USER_ID
+		    ,SCORE
+		    ,REVIEW_IMG 
+		) VALUES (
+			TO_NUMBER(#{orderNum})
+			,#{storeId}
+			,#{reviewContent}
+			,#{userId}
+			,#{score}
+			,#{reviewImg}
+		)		
+	</insert>
+	
+<select id="reviewList" resultType="Review">
+		SELECT
+		    r.order_num,
+		    r.store_id,
+		    r.review_content,
+		    r.boss_comment,
+		    r.regi_date,
+		    r.score,
+		    r.review_img,
+		    r.user_id,
+		    u.nickname
+		FROM
+		    bm_review r
+		LEFT JOIN
+		    bm_user u
+		ON
+		    r.user_id = u.id
+		WHERE
+		    r.store_id = #{id}
+		ORDER BY    
+			regi_date DESC
+	</select>
+	
+	<select id="storeDetail" resultType="Store">
+SELECT	RESULT.*
+        ,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
+FROM	(SELECT S.*,
+                C.*,
+                CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+        FROM 	BM_STORE S
+                ,(SELECT * FROM  
+                        (SELECT	ROUND(AVG(SCORE),1) SCORE
+                        ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                        ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT
+                        ,COUNT(CASE WHEN SCORE=1 THEN 1 END) SCORE1
+                        ,COUNT(CASE WHEN SCORE=2 THEN 1 END) SCORE2
+                        ,COUNT(CASE WHEN SCORE=3 THEN 1 END) SCORE3
+                        ,COUNT(CASE WHEN SCORE=4 THEN 1 END) SCORE4
+                        ,COUNT(CASE WHEN SCORE=5 THEN 1 END) SCORE5
+                FROM 	BM_REVIEW WHERE STORE_ID = #{id } ) 
+                ,(SELECT SUM(ORDER_COUNT) ORDER_COUNT FROM (
+                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_USER WHERE STORE_ID = #{id }
+                        UNION ALL
+                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_NON_USER WHERE STORE_ID = #{id } ))
+                ) C
+        WHERE 	ID = #{id }
+        ) RESULT
+</select>
+
+<update id="reviewModify">
+    UPDATE BM_REVIEW SET
+        REVIEW_CONTENT = #{reviewContent}
+        ,SCORE = #{score}
+        
+        <if test="reviewImg != null and reviewImg != ''">
+        ,REVIEW_IMG = #{reviewImg}
+        </if>
+        
+    WHERE
+        ORDER_NUM = TO_NUMBER(#{orderNum})    
+</update>
 </mapper>

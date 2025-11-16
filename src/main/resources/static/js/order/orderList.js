@@ -13,10 +13,20 @@ $(document).ready(function() {
 			const reviewContent = $(this).siblings(".review_content").val();
 			const reviewScore = $(this).siblings(".review_score").val();
 			const reviewImg = $(this).siblings(".review_img").val();
-			
 			$(".review_modify_modal textarea").val(reviewContent);
 			$(".review_modify_modal .preview").attr("src", reviewImg);
-			$(".review_modify_modal .img_box div").css("display", "block");
+			$(".review_modify_modal .review_img_hidden").val(reviewImg);
+			
+			// 기존 별점 설정
+			if(reviewScore && reviewScore > 0) {
+				$(".review_modify_modal .score_box i").removeClass("fas");
+				$(".review_modify_modal .score_box i").eq(reviewScore - 1).addClass("fas").prevAll().addClass("fas");
+				$(".review_modify_modal .score").val(reviewScore);
+			}
+			
+			if(reviewImg != "" && reviewImg != null) {
+				$(".review_modify_modal .img_box div").css("display", "block");
+			}
 			
 		}
 
@@ -31,12 +41,12 @@ $(document).ready(function() {
 		
 		
 		// 별점주기
-		let score = 0;
+		let score = modal.find(".score").val() || 0;
 	
-		$(".score_box i").off().click(function() {
+		modal.find(".score_box i").off().click(function() {
 			score = $(this).index() + 1;
 				
-			$(".score_box i").removeClass("fas");
+			modal.find(".score_box i").removeClass("fas");
 			$(this).addClass("fas").prevAll().addClass("fas");
 	
 			modal.find(".score").val(score);
@@ -46,7 +56,7 @@ $(document).ready(function() {
 		
 		
 		
-		$(".review_text textarea").off().keyup(function() {
+		modal.find(".review_text textarea").off().keyup(function() {
 			inputCheck(modal);
 		})
 		
@@ -57,7 +67,7 @@ $(document).ready(function() {
 			let text = modal.find(".review_text textarea").val();
 			let score = modal.find(".score").val();
 			
-			if(text.length == 0 || score == "" || score == null) {
+			if(text.length == 0 || score == "" || score == null || score == 0) {
 				modal.find(".review_submit_btn").css("background", "#ddd");
 				modal.find(".review_submit_btn").attr("disabled", true);
 			} else {
@@ -65,6 +75,9 @@ $(document).ready(function() {
 				modal.find(".review_submit_btn").css("background", "#30DAD9");
 			}
 		}
+		
+		// 모달 열 때 초기 상태 체크
+		inputCheck(modal);
 	});
 	
 
