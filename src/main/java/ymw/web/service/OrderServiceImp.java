@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+
 import ymw.web.dao.OrderDAO;
 import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
+import ymw.web.dto.OrderDetail;
 import ymw.web.dto.OrderInfo;
 import ymw.web.login.LoginService;
 
@@ -46,9 +49,39 @@ public class OrderServiceImp implements OrderService {
 		return sum + deleveryTip; 
 	}
 
+	@Transactional
 	@Override
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session) {
-		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		
+		System.out.println("info = " + info);
+		
+		int total = cart.getCartTotal();
+		
+		info.setStoreId(cart.getStoreId());
+		info.setTotalPrice(total);
+		
+		long userId = 0;
+		if (user != null) {
+			userId = user.getUser().getId();
+			info.setUserId(userId);
+		}
+		
+		List<Cart> cartList = cart.getCart();
+		
+		OrderDetail[] detail = new OrderDetail[cartList.size()];
+		
+		
+		for(int i=0;i<detail.length;i++) {
+			String cartJSON = gson.toJson(cartList.get(i));
+			detail[i] = new OrderDetail(info.getOrderNum(), cartJSON);
+		}
+		
+		orderDAO.order(info);
+		orderDAO.orderDetail(detail, userId);
+		
+		
+		
 		return null;
 	}
 	

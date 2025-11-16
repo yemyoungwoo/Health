@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -137,5 +138,40 @@ public class CartController {
 		cartTotal -=  removeCartPrice;
 		cartList.setCartTotal(cartTotal);
 		return cartList;
+	}
+	@ResponseBody
+	@PatchMapping("/cartAmount")
+	public CartList cartAmount(int cartNum, String clickBtn, HttpSession session) {
+	    CartList cartList = (CartList) session.getAttribute("cartList");
+	    List<Cart> cart = cartList.getCart();
+	    
+	    Cart prevCart = cart.get(cartNum);
+	    
+	    int amount = prevCart.getAmount();
+	    int foodPrice = prevCart.getTotalPrice() / amount;
+	    int total = cartList.getCartTotal() - prevCart.getTotalPrice();
+	    
+	    if(clickBtn.equals("plus")) {
+	        amount++;
+	        foodPrice = foodPrice * amount;
+	        
+	        prevCart.setAmount(amount);
+	        prevCart.setTotalPrice(foodPrice);
+	        
+	    } else {
+	        if (amount <= 1) {
+	            return cartList;
+	        }
+	        amount--;
+	        foodPrice = foodPrice * amount;
+	        
+	        prevCart.setAmount(amount);
+	        prevCart.setTotalPrice(foodPrice);
+	    }
+	    
+	    cartList.setCartTotal(total + foodPrice);
+	    cart.set(cartNum, prevCart);
+	    
+	    return cartList;
 	}
 }

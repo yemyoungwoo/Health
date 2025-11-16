@@ -12,4 +12,5 @@ public interface OrderService {
 	long orderPriceCheck(CartList cartList);
 
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session);
+	
 }

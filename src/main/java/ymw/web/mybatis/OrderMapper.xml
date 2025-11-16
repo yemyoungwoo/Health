@@ -19,21 +19,103 @@
 	
 	
 	<select id="optionPriceList" resultType="int">
-		
 		<foreach collection="list" item="item"  separator="union all" >
 			<if test="item.optionId == null">
 				select 0 from dual 
 			</if>
-			
 			<if test="item.optionId != null">
 				select sum(option_price) sum from bm_food_option where id in
 				<foreach collection="item.optionId" item="i" open="(" close=")" separator="," >
 					#{i}
 				</foreach>
 			</if>
-			
 		</foreach>
-		
 	</select>
 	
+	<insert id="order">
+		<if test="userId == 0">
+			INSERT INTO BM_ORDER_NON_USER (
+			    ORDER_NUM
+			    ,STORE_ID 
+			    ,USER_ID 
+			    ,PAY_METHOD 
+			    ,PHONE
+			    ,DELEVERY_ADDRESS1
+			    ,DELEVERY_ADDRESS2
+			    ,DELEVERY_ADDRESS3
+			    ,TOTAL_PRICE 
+			    ,USED_POINT 
+			    ,REQUEST 
+		    ) VALUES (
+			    ${orderNum }
+			    ,#{storeId }
+			    ,#{userId }
+			    ,#{payMethod }
+			    ,#{phone }  
+			    ,#{deleveryAddress1 }
+			    ,#{deleveryAddress2 }
+			    ,#{deleveryAddress3 } 
+			    ,#{totalPrice } 
+			    ,#{usedPoint } 
+			    ,#{request } 
+		    )
+		</if>
+		
+		
+		<if test="userId != 0">
+			INSERT INTO BM_ORDER_USER (
+			     ORDER_NUM
+			    ,STORE_ID 
+			    ,USER_ID 
+			    ,PAY_METHOD 
+			    ,PHONE
+			    ,DELEVERY_ADDRESS1
+			    ,DELEVERY_ADDRESS2
+			    ,DELEVERY_ADDRESS3
+			    ,TOTAL_PRICE 
+			    ,USED_POINT 
+			    ,REQUEST 
+		    ) VALUES (
+			    ${orderNum }
+			    ,#{storeId }
+			    ,#{userId }
+			    ,#{payMethod }
+			    ,#{phone }  
+			    ,#{deleveryAddress1 }
+			    ,#{deleveryAddress2 }
+			    ,#{deleveryAddress3 } 
+			    ,#{totalPrice } 
+			    ,#{usedPoint } 
+			    ,#{request } 
+		    )
+		</if>
+	</insert>
+	
+	<insert id="orderDetail">
+		<if test="userId == 0">
+			INSERT INTO BM_ORDER_DETAIL_NON_USER (
+				ORDER_NUM,
+				FOOD_INFO
+			) VALUES
+			<foreach collection="detail" item="item" separator=",">
+				(
+					#{item.orderNum},
+					#{item.foodInfoJSON}
+				)
+			</foreach>
+		</if>
+		
+		<if test="userId != 0">
+			INSERT INTO BM_ORDER_DETAIL_USER (
+				ORDER_NUM,
+				FOOD_INFO
+			) VALUES
+			<foreach collection="detail" item="item" separator=",">
+				(
+					#{item.orderNum},
+					#{item.foodInfoJSON}
+				)
+			</foreach>
+		</if>
+	</insert>
 </mapper>

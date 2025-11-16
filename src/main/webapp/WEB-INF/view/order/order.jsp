@@ -4,6 +4,7 @@
 <!-- <link rel="stylesheet" href="/css/layout/nav.css"> -->
 <link rel="stylesheet" href="/css/order/order.css">
 
+<%@ include file="/WEB-INF/view/include/header.jsp" %>
 	
 	
 	<div class="temp_img_box">
@@ -125,6 +126,31 @@
 			<hr>
 		</li>
 		
+		<li class="point_area">
+			<h2>포인트</h2>
+			
+			<div class="point">
+				<div class="point_click">
+					<c:if test="${!empty user  }">
+						<span><fm:formatNumber value="${user.point }"  pattern="###,###" />원 사용 가능</span>
+						<input type="hidden" value="${user.point }" id="point">
+					</c:if>
+					
+					<c:if test="${empty user  }">
+						<span >로그인후 사용 가능합니다.</span>
+					</c:if>
+					
+					<span class="icon"> <i class="fas fa-chevron-down"></i>  </span>
+				</div>
+				
+				<div class="point_input_box" >
+					<input type="number" name="usedPoint" value="0" pattern="/d" class="point_input" placeholder="사용 할 포인트"  >
+					<button class="use_point" type="button">사용하기</button>
+				</div>
+			
+			</div><hr>
+				
+		</li>
 		
 		<li class="pay">
 			<div class="order_price">주문금액 : <fm:formatNumber value="${cartList.cartTotal }"  pattern="###,###" />원</div>
@@ -158,7 +184,6 @@
     <!-- 하단 메뉴 -->
 
 	<!-- 푸터 -->
-	<%-- <%@ include file="/WEB-INF/view/include/footer.jsp" %> --%>
 	<!-- 푸터 -->
 	
 	<script type="text/javascript" src="/js/order/order.js" ></script>

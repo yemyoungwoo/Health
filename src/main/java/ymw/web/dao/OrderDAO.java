@@ -3,6 +3,8 @@ package ymw.web.dao;
 import java.util.List;
 
 import ymw.web.dto.Cart;
+import ymw.web.dto.OrderDetail;
+import ymw.web.dto.OrderInfo;
 
 public interface OrderDAO {
 
@@ -14,4 +16,10 @@ public interface OrderDAO {
 	
 	//	메뉴 총합가격 계산시 음식 추가 옵션가격
 	List<Integer> optionPriceList(List<Cart> cart);
+	
+	// 주문 정보 입력
+	void order(OrderInfo info);
+	
+	// 주문 상세정보 입력
+	void orderDetail(OrderDetail[] detail, long userId);
 }
