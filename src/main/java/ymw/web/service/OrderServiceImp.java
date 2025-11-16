@@ -10,18 +10,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
+import ymw.web.dao.AdminDAO;
 import ymw.web.dao.OrderDAO;
 import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
 import ymw.web.dto.OrderDetail;
 import ymw.web.dto.OrderInfo;
+import ymw.web.dto.OrderList;
 import ymw.web.login.LoginService;
+import ymw.web.util.UserInfoSessionUpdate;
 
 @Service
 public class OrderServiceImp implements OrderService {
 	
 	@Autowired
 	private OrderDAO orderDAO;
+	
+	@Autowired
+	private AdminDAO adminDAO;
 	
 	@Transactional
 	@Override
@@ -52,6 +58,7 @@ public class OrderServiceImp implements OrderService {
 	@Transactional
 	@Override
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session) {
+		
 		Gson gson = new Gson();
 		
 		System.out.println("info = " + info);
@@ -80,9 +87,35 @@ public class OrderServiceImp implements OrderService {
 		orderDAO.order(info);
 		orderDAO.orderDetail(detail, userId);
 		
+		// 회원 포인트 적립
+		if (user != null) {
+		    String storeName = cart.getStoreName();
+		    int point = (int)(total * 0.01); 
+		    int result = adminDAO.pointUpdate(userId, storeName, point);
+		    if(result == 1) {
+		        UserInfoSessionUpdate.sessionUpdate(point+"", "point", user, session);
+		    }
+		}
+		
+		// 로그인 사용자가 포인트 사용했을때
+		if(info.getUsedPoint() != 0 ) {
+		    String storeName =  cart.getStoreName();
+		    int usedPoint =  -info.getUsedPoint();
+		    int result = adminDAO.pointUpdate(userId, storeName, usedPoint);
+		    
+		    if(result == 1) {
+		        UserInfoSessionUpdate.sessionUpdate(usedPoint+"", "point", user, session);
+		    }
+		}
+		
 		
 		
 		return null;
 	}
-	
+	@Override
+	public List<OrderList> orderList(long userId) {
+		return orderDAO.orderList(userId);
+	}
 }
+
+

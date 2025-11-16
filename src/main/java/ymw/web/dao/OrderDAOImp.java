@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import ymw.web.dto.Cart;
 import ymw.web.dto.OrderDetail;
 import ymw.web.dto.OrderInfo;
+import ymw.web.dto.OrderList;
 
 @Repository
 public class OrderDAOImp implements OrderDAO {
@@ -44,5 +45,10 @@ public class OrderDAOImp implements OrderDAO {
 		map.put("userId", userId);
 		map.put("detail", detail);
 		sql.insert("order.orderDetail", map);
+	}
+	
+	@Override
+	public List<OrderList> orderList(long userId) {
+		return sql.selectList("order.orderList", userId);
 	}
 }

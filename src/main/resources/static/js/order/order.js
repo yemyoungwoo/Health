@@ -159,30 +159,56 @@ function paymentCash(data){
 
 
 	
+// 포인트 사용 버튼 클릭 이벤트 (조건문 밖으로 이동)
+$(document).on("click", ".use_point", function(e){
+	e.preventDefault();
+	e.stopPropagation();
+	
+	console.log("포인트 사용 버튼 클릭됨!");
+	
+	// 포인트 입력 필드에서 직접 값 가져오기
+	const pointInput = $("input.point_input").val();
+	const point = parseInt(pointInput) || 0;
+	const total = parseInt($("#total").val()) || 0;
+	const deleveryTip = parseInt($("#delevery_tip").val()) || 0;
+	const orderAmount = total - deleveryTip; // 배달팁 제외한 주문금액
+	
+	console.log("입력값:", pointInput);
+	console.log("변환된 포인트:", point);
+	console.log("총액:", total);
+	console.log("배달팁:", deleveryTip);
+	console.log("주문금액:", orderAmount);
+	
+	if(point > 0) {
+		// 포인트는 주문금액(배달팁 제외)까지만 사용 가능
+		const finalPoint = point > orderAmount ? orderAmount : point;
+		
+		// usedPoint input 값 업데이트 (서버로 전송될 값)
+		$("input[name='usedPoint']").val(finalPoint);
+		$("input.point_input").val(finalPoint);
+		
+		// 최종 결제 금액 계산 및 표시
+		const finalTotal = total - finalPoint;
+		$(".total").html("");
+		const html = finalTotal.toLocaleString() +"원 결제하기";
+		$(".total").html(html);
+		
+		// 포인트 할인 표시
+		$(".point_dis").css("display", "block");
+		$(".point_dis span:last-child").text("-" + finalPoint.toLocaleString() + "원");
+		
+		console.log("포인트 할인 적용 완료:", finalPoint, "최종 금액:", finalTotal);
+		alert("포인트 " + finalPoint.toLocaleString() + "원이 할인되었습니다.");
+	} else {
+		alert("포인트를 입력해주세요!");
+	}
+});
+
 if($("#user_id").val() != ""){
 
 	$(".point_click").click(function(){
 		$(".point_input_box").fadeToggle(200);
 	});
-	
-	$(".use_point").click(function(){
-		
-		const point = Number($(".point_input").val());
-		/*const deleveryTip = Number($("#delevery_tip").val());*/
-		const total = Number($("#total").val());
-		
-		if(point != 0) {
-			$(".total").html("");
-			const html = (total - point).toLocaleString() +"원 결제하기";
-			$(".total").html(html);
-			
-			$(".point_dis").show();
-			$(".point_dis").html("포인트 할인 -" + point.toLocaleString() + "원");
-		}
-	});
-	
-	
-	
 	
  	$(".point_input").focusout(function(){
  		const total = Number($("#total").val());

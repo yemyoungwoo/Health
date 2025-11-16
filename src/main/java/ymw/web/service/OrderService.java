@@ -1,9 +1,12 @@
 package ymw.web.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import ymw.web.dto.CartList;
 import ymw.web.dto.OrderInfo;
+import ymw.web.dto.OrderList;
 import ymw.web.login.LoginService;
 
 public interface OrderService {
@@ -12,5 +15,8 @@ public interface OrderService {
 	long orderPriceCheck(CartList cartList);
 
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session);
+	
+	// 주문목록
+	List<OrderList> orderList(long userId);
 	
 }

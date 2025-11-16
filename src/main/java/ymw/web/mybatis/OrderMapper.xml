@@ -118,4 +118,39 @@
 			</foreach>
 		</if>
 	</insert>
+	
+		<select id="orderList" resultType="OrderList">
+		SELECT	
+			o.order_num as "orderNum",
+			o.store_id as "storeId",
+			o.user_id as "userId",
+			o.order_date as "orderDate",
+			o.pay_method as "payMethod",
+			o.delevery_status as "deleveryStatus",
+			o.delevery_address1 as "deleveryAddress1",
+			o.delevery_address2 as "deleveryAddress2",
+			o.delevery_address3 as "deleveryAddress3",
+			o.total_price as "totalPrice",
+			o.used_point as "usedPoint",
+			o.phone as "phone",
+			o.request as "request",
+			d.food_info as "foodInfo",
+			s.store_name as "storeName",
+			s.store_img as "storeImg",
+			s.store_thumb as "storeThumb",
+			s.delevery_tip as "deleveryTip",
+			CAST(NULL AS VARCHAR2(2000)) as "reviewContent",
+			0 as "score",
+			CAST(NULL AS VARCHAR2(200)) as "reviewImg"
+		FROM	bm_order_user o
+		LEFT JOIN (
+			SELECT  ORDER_NUM, 
+			        LISTAGG(FOOD_INFO, '/') WITHIN GROUP (ORDER BY ORDER_NUM) as food_info
+			FROM    BM_ORDER_DETAIL_USER 
+			GROUP BY ORDER_NUM
+		) d ON o.order_num = d.order_num
+		LEFT JOIN bm_store s ON o.store_id = s.id
+		WHERE o.user_id = #{userId}
+		ORDER BY o.order_date DESC
+	</select>
 </mapper>

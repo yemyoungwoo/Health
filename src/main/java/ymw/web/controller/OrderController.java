@@ -12,25 +12,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
 import ymw.web.dto.OrderInfo;
+import ymw.web.dto.OrderList;
 import ymw.web.login.LoginService;
 import ymw.web.service.OrderService;
 import ymw.web.util.CreateOrderNum;
-import ymw.web.util.FoodPriceCalc;
+import ymw.web.util.FoodInfoFromJson;
 
 @Controller
 public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private OrderService orderList;
 	
 	@GetMapping("/order")
 	public String order(HttpSession session, Model model, @AuthenticationPrincipal LoginService user) {
@@ -65,5 +67,33 @@ public class OrderController {
 	    }
 
 	    return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/orderList")
+	public String orderList(@AuthenticationPrincipal LoginService user, Model model) {
+	    if (user == null) {
+	        System.out.println("비로그인");
+	    } else {
+	        System.out.println("로그인");
+	        long userId = user.getUser().getId();
+
+	        List<OrderList> orderList = orderService.orderList(userId);
+
+	        if (orderList.size() == 0) {
+	            return "order/orderList";
+	        }
+
+	        List<List<Cart>> cartList = new ArrayList<>();
+//
+	        for (int i=0;i<orderList.size();i++) {
+	            cartList.add(FoodInfoFromJson.foodInfoFromJson(orderList.get(i).getFoodInfo()));
+	        }
+	        
+	        model.addAttribute("user", user.getUser());
+	        model.addAttribute("cartList", cartList);
+	        model.addAttribute("orderList", orderList);
+	    }
+
+	    return "order/orderList";
 	}
 }
