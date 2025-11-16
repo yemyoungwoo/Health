@@ -19,4 +19,7 @@ public interface OrderService {
 	// 주문목록
 	List<OrderList> orderList(long userId);
 	
+	// 주문목록 상세보기
+	OrderList orderListDetail(String orderNum);
+	
 }

@@ -26,4 +26,7 @@ public interface OrderDAO {
 	
 	//주문한 내역 가져오기
 	List<OrderList> orderList(long userId);
+	
+	// 주문목록 상세보기 페이지
+	OrderList orderListDetail(String orderNum);
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -95,5 +96,27 @@ public class OrderController {
 	    }
 
 	    return "order/orderList";
+	}
+	
+	
+	@GetMapping("/orderListDetail/{orderNum}")
+	public String orderDetail(@PathVariable String orderNum, Model model, @AuthenticationPrincipal LoginService user) {
+
+	    OrderList orderDetail = orderService.orderListDetail(orderNum);
+	    
+	    if (user != null && (user.getUser().getId() != orderDetail.getUserId())) {
+	        System.out.println("다른 사용자");
+	        return "redirect:/";
+	    } else if (user == null) {
+	        System.out.println("비로그인");
+	        return "redirect:/";
+	    }
+	    
+	    List<Cart> list = FoodInfoFromJson.foodInfoFromJson(orderDetail.getFoodInfo());
+
+	    model.addAttribute("orderDetail", orderDetail);
+	    model.addAttribute("cart", list);
+
+	    return "order/orderListDetail";
 	}
 }

@@ -51,4 +51,9 @@ public class OrderDAOImp implements OrderDAO {
 	public List<OrderList> orderList(long userId) {
 		return sql.selectList("order.orderList", userId);
 	}
+	
+	@Override
+	public OrderList orderListDetail(String orderNum) {
+		return sql.selectOne("order.orderListDetail", orderNum);
+	}
 }

@@ -154,4 +154,35 @@
 		WHERE o.user_id = #{userId}
 		ORDER BY o.order_date DESC
 	</select>
+	
+	<select id="orderListDetail" resultType="OrderList">
+		SELECT	o.order_num,
+		    	o.user_id,
+		    	o.order_date,
+		    	o.pay_method,
+		    	o.delevery_status,
+		    	o.phone,
+		    	o.delevery_address1,
+		    	o.delevery_address2,
+		    	o.delevery_address3,
+		    	o.store_id,
+		    	o.total_price,
+		    	o.used_point,
+                o.request,
+                d.food_info,
+		    	s.store_name,
+			    s.delevery_tip
+	FROM		bm_order_user o
+	LEFT JOIN   (SELECT  ORDER_NUM, 
+                         LISTAGG(FOOD_INFO, '/') food_info
+                FROM     BM_ORDER_DETAIL_USER 
+                GROUP BY ORDER_NUM) d
+	ON		  	o.order_num = d.order_num
+	LEFT JOIN	bm_store s
+	ON		 	o.store_id = s.id 
+    LEFT JOIN	bm_review r
+    ON			o.order_num = r.order_num
+	WHERE		o.order_num = #{orderNum }
+	ORDER BY	o.order_date desc
+	</select>
 </mapper>

@@ -107,14 +107,15 @@ public class OrderServiceImp implements OrderService {
 		        UserInfoSessionUpdate.sessionUpdate(usedPoint+"", "point", user, session);
 		    }
 		}
-		
-		
-		
 		return null;
 	}
 	@Override
 	public List<OrderList> orderList(long userId) {
 		return orderDAO.orderList(userId);
+	}
+	@Override
+	public OrderList orderListDetail(String orderNum) {
+		return orderDAO.orderListDetail(orderNum);
 	}
 }
 
