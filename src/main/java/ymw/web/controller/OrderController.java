@@ -21,6 +21,7 @@ import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
 import ymw.web.dto.OrderInfo;
 import ymw.web.dto.OrderList;
+import ymw.web.dto.Page;
 import ymw.web.login.LoginService;
 import ymw.web.service.OrderService;
 import ymw.web.util.CreateOrderNum;
@@ -70,26 +71,28 @@ public class OrderController {
 	    return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/orderList")
-	public String orderList(@AuthenticationPrincipal LoginService user, Model model) {
+	@GetMapping({"/orderList", "/orderList/{page}"})
+	public String orderList(@AuthenticationPrincipal LoginService user, Model model, @PathVariable(required = false) Integer page) {
 	    if (user == null) {
 	        System.out.println("비로그인");
 	    } else {
 	        System.out.println("로그인");
 	        long userId = user.getUser().getId();
 
-	        List<OrderList> orderList = orderService.orderList(userId);
+	        Page p = new Page(page);
+	        List<OrderList> orderList = orderService.orderList(userId, p);
 
 	        if (orderList.size() == 0) {
 	            return "order/orderList";
 	        }
 
 	        List<List<Cart>> cartList = new ArrayList<>();
-//
+
 	        for (int i=0;i<orderList.size();i++) {
 	            cartList.add(FoodInfoFromJson.foodInfoFromJson(orderList.get(i).getFoodInfo()));
 	        }
-	        
+	        p.totalPage(orderList.get(0).getListCount());
+	        model.addAttribute("page", p);
 	        model.addAttribute("user", user.getUser());
 	        model.addAttribute("cartList", cartList);
 	        model.addAttribute("orderList", orderList);

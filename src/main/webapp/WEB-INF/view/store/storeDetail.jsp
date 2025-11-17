@@ -8,8 +8,15 @@
 		<h1 id="store_name" data-store_name="${info.storeName }">${info.storeName }</h1>
 		<div class="inf">
 			<div>
-				<span><i class="fas fa-heart"></i> 찜 </span> <span
-					class="likes_count" data-count=0>0</span>
+			    <c:choose>
+			        <c:when test="${info.isLikes == 1 }">
+			            <span><i class="fas fa-heart"></i> 찜 </span>
+			        </c:when>
+			        <c:otherwise>
+			            <span><i class="far fa-heart"></i> 찜 </span>
+			        </c:otherwise>
+			    </c:choose>
+                <span class="likes_count" data-count="${info.likesCount }">${info.likesCount }</span>
 			</div>
 			<div>
 				<span class="store_review_count" data-review_count="0"> 리뷰 0

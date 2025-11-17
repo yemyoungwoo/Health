@@ -14,7 +14,7 @@
 			
 			<a href="${store_admin }/detail/${storeList.id }">
 				<span>
-					<%-- <span>평점 ${storeList.score }</span>
+					<span>평점 ${storeList.score }</span>
 					
 					<span class="score_box">
 						<c:forEach begin="0" end="4" var="i">
@@ -25,14 +25,12 @@
 								<i class="far fa-star"></i>
 							</c:if>
 						</c:forEach>
-					</span> --%>
+					</span> 
 				</span>
 				
 			<span>
-			<%-- 
 				<span>리뷰 ${storeList.reviewCount }</span>
 				<span>사장님 댓글 ${storeList.bossCommentCount }</span>
-				 --%>
 			</span>
 			
 			<span>
@@ -41,11 +39,9 @@
 			</a>
 		</div>
 		
-		<%-- 
 	<c:if test="${!storeList.isOpen}">
 		<div class="is_open">
 			<a href="/store/detail/${storeList.id }">지금은 준비중입니다</a>
 		</div>
 	</c:if>
-	 --%>
 </li>

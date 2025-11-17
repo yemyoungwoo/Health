@@ -91,12 +91,12 @@
         	
             </ul>
         </div>
+        <%@ include file="/WEB-INF/view/include/PageBox.jsp" %>
     </main>
     </c:if>
 </div>
 
     <!-- 하단 메뉴 -->
-	<%@ include file="/WEB-INF/view/include/nav.jsp" %>
     <!-- 하단 메뉴 -->
 
     <!-- 푸터 -->

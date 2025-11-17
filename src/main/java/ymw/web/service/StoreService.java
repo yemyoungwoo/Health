@@ -20,4 +20,9 @@ public interface StoreService {
 	
 	void reviewModify(Review review);
 //	List<FoodOption> foodOption(int foodId);
+	
+	// 찜
+	void likes(long storeId, String likes, long userId);
+	
+	StoreDetail storeDetail(long id, long userId);
 }

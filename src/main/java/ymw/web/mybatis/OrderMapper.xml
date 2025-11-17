@@ -119,40 +119,46 @@
 		</if>
 	</insert>
 	
-		<select id="orderList" resultType="OrderList">
-		SELECT	
-			o.order_num as "orderNum",
-			o.store_id as "storeId",
-			o.user_id as "userId",
-			o.order_date as "orderDate",
-			o.pay_method as "payMethod",
-			o.delevery_status as "deleveryStatus",
-			o.delevery_address1 as "deleveryAddress1",
-			o.delevery_address2 as "deleveryAddress2",
-			o.delevery_address3 as "deleveryAddress3",
-			o.total_price as "totalPrice",
-			o.used_point as "usedPoint",
-			o.phone as "phone",
-			o.request as "request",
-			d.food_info as "foodInfo",
-			s.store_name as "storeName",
-			s.store_img as "storeImg",
-			s.store_thumb as "storeThumb",
-			s.delevery_tip as "deleveryTip",
-			r.review_content as "reviewContent",
-			NVL(r.score, 0) as "score",
-			r.review_img as "reviewImg"
-		FROM	bm_order_user o
-		LEFT JOIN (
-			SELECT  ORDER_NUM, 
-			        LISTAGG(FOOD_INFO, '/') WITHIN GROUP (ORDER BY ORDER_NUM) as food_info
-			FROM    BM_ORDER_DETAIL_USER 
-			GROUP BY ORDER_NUM
-		) d ON o.order_num = d.order_num
-		LEFT JOIN bm_store s ON o.store_id = s.id
-		LEFT JOIN bm_review r ON o.order_num = r.order_num
-		WHERE o.user_id = #{userId}
-		ORDER BY o.order_date DESC
+	<select id="orderList" resultType="OrderList">
+	SELECT * FROM (
+    	SELECT	ROWNUM R
+    			,O.* 
+    	FROM 	(SELECT	count(*) over() list_count,
+				    	o.order_num,
+				    	o.user_id,
+				    	o.order_date,
+				    	o.pay_method,
+				    	o.delevery_status,
+				    	o.delevery_address1,
+				    	o.delevery_address2,
+				    	o.delevery_address3,
+				    	o.store_id,
+				    	o.total_price,
+				    	o.used_point,
+                        o.request,
+                        d.food_info,
+				    	s.store_name,
+					    s.store_img,
+					    s.store_thumb,
+					    s.delevery_tip,
+			            r.review_content,
+			            r.score,
+			            r.review_img
+			FROM		bm_order_user o
+			LEFT JOIN   (SELECT  ORDER_NUM, 
+                                 LISTAGG(FOOD_INFO, '/') food_info
+                        FROM     BM_ORDER_DETAIL_USER 
+                        GROUP BY ORDER_NUM) d
+			ON		  	o.order_num = d.order_num
+			LEFT JOIN	bm_store s
+			ON		 	o.store_id = s.id 
+	        LEFT JOIN	bm_review r
+	        ON			o.order_num = r.order_num
+			WHERE		o.user_id = #{userId }
+			ORDER BY	o.order_date desc  
+	        ) O
+		) 
+	WHERE R BETWEEN #{firstList } AND #{lastList }
 	</select>
 	
 	<select id="orderListDetail" resultType="OrderList">
@@ -184,5 +190,6 @@
     ON			o.order_num = r.order_num
 	WHERE		o.order_num = #{orderNum }
 	ORDER BY	o.order_date desc
+	WHERE R BETWEEN #{firstList } AND #{lastList }
 	</select>
 </mapper>

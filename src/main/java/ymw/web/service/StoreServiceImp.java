@@ -56,4 +56,25 @@ public class StoreServiceImp implements StoreService {
 	public void reviewModify(Review review) {
 	    storeDAO.reviewModify(review);
 	}
+	
+	@Override
+	public void likes(long storeId, String likes, long userId) {
+	    Map<String, Long> map = new HashMap<>();
+	    map.put("storeId", storeId);
+	    map.put("userId", userId);
+	    
+	    if(likes.equals("on")) {
+	        storeDAO.addLikes(map);
+	    } else {
+	        storeDAO.deleteLikes(map);
+	    }
+	}
+	@Override
+	public StoreDetail storeDetail(long storeId, long userId) {
+	    Store storeInfo = storeDAO.storeDetail(storeId, userId); 
+	    List<Food> foodList = storeDAO.foodList(storeId);
+	    List<Review> reviewList = storeDAO.reviewList(storeId);
+	     
+	    return new StoreDetail(storeInfo, foodList, reviewList);
+	}
 }

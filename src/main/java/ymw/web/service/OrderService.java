@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import ymw.web.dto.CartList;
 import ymw.web.dto.OrderInfo;
 import ymw.web.dto.OrderList;
+import ymw.web.dto.Page;
 import ymw.web.login.LoginService;
 
 public interface OrderService {
@@ -21,5 +22,7 @@ public interface OrderService {
 	
 	// 주문목록 상세보기
 	OrderList orderListDetail(String orderNum);
+	
+	List<OrderList> orderList(long userId, Page p);
 	
 }

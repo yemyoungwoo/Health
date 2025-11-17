@@ -53,6 +53,11 @@ public class OrderDAOImp implements OrderDAO {
 	}
 	
 	@Override
+	public List<OrderList> orderList(Map<String, Object> map) {
+		return sql.selectList("order.orderList", map);
+	}
+	
+	@Override
 	public OrderList orderListDetail(String orderNum) {
 		return sql.selectOne("order.orderListDetail", orderNum);
 	}

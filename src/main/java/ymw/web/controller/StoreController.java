@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,13 +41,15 @@ public class StoreController {
 	}
 	
 	@GetMapping("/store/detail/{id}")
-	public String storeDetail(@PathVariable long id, Model model) {
- 
-		StoreDetail storeDetail = storeService.storeDetail(id);
- 
-		model.addAttribute("store", storeDetail);
- 
-		return "store/detail";
+	public String storeDetail(@PathVariable long id, Model model, @AuthenticationPrincipal LoginService user) {
+	    long userId = 0;
+	    if(user != null) {
+	        userId = user.getUser().getId();
+	    }
+	    
+	    StoreDetail storeDetail = storeService.storeDetail(id, userId);
+	    model.addAttribute("store", storeDetail);
+	    return "store/detail";
 	}
 	
 	// 메뉴 클릭시 음식 추가옵션 가져요기
@@ -88,6 +92,19 @@ public class StoreController {
 	    storeService.reviewModify(review);
 
 	    return "redirect:/orderList";
+	}
+	
+	// 찜하기
+	@ResponseBody
+	@PostMapping("/store/likes")
+	public ResponseEntity<Long> likes(long id, String likes, @AuthenticationPrincipal LoginService user) {
+	    if (user == null) {
+	        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	    }
+	    
+	    long userId = user.getUser().getId();
+	    storeService.likes(id, likes, userId);
+	    return new ResponseEntity<>(userId, HttpStatus.OK);
 	}
 }
 

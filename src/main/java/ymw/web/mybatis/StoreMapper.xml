@@ -3,9 +3,79 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="store">
-
 	<select id="storeList" resultType="Store">
-		SELECT * FROM BM_STORE
+		WITH R_COUNT AS (
+		SELECT R.STORE_ID
+		,ROUND(R.SCORE, 1) SCORE
+		,R.REVIEW_COUNT
+		,R.BOSS_COMMENT_COUNT
+		FROM
+		(SELECT STORE_ID
+		,AVG(SCORE)
+		SCORE
+		,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+		,COUNT(BOSS_COMMENT)
+		BOSS_COMMENT_COUNT
+		FROM BM_REVIEW GROUP BY STORE_ID ) R
+		),
+		STORE AS (
+		SELECT S.*,
+		T.*,
+		CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24)
+		!= 0 THEN MOD(24 -
+		S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END
+		BS_TIME
+
+		FROM BM_STORE S
+		LEFT JOIN R_COUNT T
+		ON S.ID = T.STORE_ID
+		WHERE
+		CATEGORY = #{category}
+		AND STORE_ADDRESS1 LIKE '${address1}%'
+
+		<if test="sort == '배달 빠른 순'">
+			ORDER BY DELEVERY_TIME
+		</if>
+
+		<if test="sort == '배달팁 낮은 순'">
+			ORDER BY DELEVERY_TIP
+		</if>
+
+		<if test="sort == '별점 높은 순'">
+			ORDER BY SCORE
+		</if>
+
+		<if test="sort == '리뷰 많은 순'">
+			ORDER BY REVIEW_COUNT
+		</if>
+
+		<if test="sort == '최소 주문 금액 순'">
+			ORDER BY MIN_DELEVERY
+		</if>
+		)
+		SELECT * FROM
+		(SELECT ROWNUM RN,
+		RESULT.*
+		FROM
+		(SELECT C.*
+		,'true' IS_OPEN
+		FROM STORE C
+		WHERE TO_CHAR(SYSTIMESTAMP, 'HH24') BETWEEN OPENING_TIME
+		AND OPENING_TIME +
+		BS_TIME
+
+		UNION ALL
+
+		SELECT C.*
+		,'false' IS_OPEN
+		FROM STORE
+		C
+		WHERE TO_CHAR(SYSTIMESTAMP, 'HH24') NOT BETWEEN OPENING_TIME AND
+		OPENING_TIME + BS_TIME
+		) RESULT
+		)
+		<!-- 한번에 출력될 페이지를 조절하기 위해 쿼리를 추가 -->
+<!-- 		WHERE RN BETWEEN 1 AND 10 -->
 	</select>	
 
 <!-- 	<select id="storeDetail" resultType="Store"> -->
@@ -80,7 +150,7 @@
 			regi_date DESC
 	</select>
 	
-	<select id="storeDetail" resultType="Store">
+	<select id="storeDetailBase" resultType="Store">
 SELECT	RESULT.*
         ,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
 FROM	(SELECT S.*,
@@ -106,6 +176,46 @@ FROM	(SELECT S.*,
         ) RESULT
 </select>
 
+	<select id="storeDetailWithLikes" resultType="Store">
+SELECT	RESULT.*
+        ,CASE WHEN TO_CHAR(SYSDATE,'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME THEN 'true' ELSE 'false' END IS_OPEN
+        ,NVL(LIKES.LIKES_COUNT, 0) LIKES_COUNT
+        ,NVL(USER_LIKES.IS_LIKES, 0) IS_LIKES
+FROM	(SELECT S.*,
+                C.*,
+                CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+        FROM 	BM_STORE S
+                ,(SELECT * FROM  
+                        (SELECT	ROUND(AVG(SCORE),1) SCORE
+                        ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                        ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT
+                        ,COUNT(CASE WHEN SCORE=1 THEN 1 END) SCORE1
+                        ,COUNT(CASE WHEN SCORE=2 THEN 1 END) SCORE2
+                        ,COUNT(CASE WHEN SCORE=3 THEN 1 END) SCORE3
+                        ,COUNT(CASE WHEN SCORE=4 THEN 1 END) SCORE4
+                        ,COUNT(CASE WHEN SCORE=5 THEN 1 END) SCORE5
+                FROM 	BM_REVIEW WHERE STORE_ID = #{storeId } ) 
+                ,(SELECT SUM(ORDER_COUNT) ORDER_COUNT FROM (
+                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_USER WHERE STORE_ID = #{storeId }
+                        UNION ALL
+                    SELECT COUNT(*) ORDER_COUNT FROM BM_ORDER_NON_USER WHERE STORE_ID = #{storeId } ))
+                ) C
+        WHERE 	ID = #{storeId }
+        ) RESULT
+        LEFT JOIN (
+            SELECT STORE_ID, COUNT(*) LIKES_COUNT
+            FROM BM_LIKES
+            GROUP BY STORE_ID
+        ) LIKES
+        ON RESULT.ID = LIKES.STORE_ID
+        LEFT JOIN (
+            SELECT STORE_ID, 1 IS_LIKES
+            FROM BM_LIKES
+            WHERE USER_ID = #{userId }
+        ) USER_LIKES
+        ON RESULT.ID = USER_LIKES.STORE_ID
+	</select>
+
 <update id="reviewModify">
     UPDATE BM_REVIEW SET
         REVIEW_CONTENT = #{reviewContent}
@@ -118,4 +228,22 @@ FROM	(SELECT S.*,
     WHERE
         ORDER_NUM = TO_NUMBER(#{orderNum})    
 </update>
+
+<insert id="addLikes">
+    INSERT INTO BM_LIKES (
+        USER_ID
+        ,STORE_ID
+    ) VALUES (
+        #{userId }
+        ,#{storeId }
+    )
+</insert>
+
+<delete id="deleteLikes">
+    DELETE BM_LIKES  WHERE 
+    USER_ID = #{userId } AND
+    STORE_ID = #{storeId }			
+</delete>
+
+
 </mapper>

@@ -75,13 +75,14 @@ $(document).ready(function() {
 
 	// 찜하기
 	$(".inf i").click(function(){
+		const icon = $(this);
 		let likes ="";
 
-		if($(this).hasClass("far")) {
-			$(this).removeClass("far").addClass("fas");
+		if(icon.hasClass("far")) {
+			icon.removeClass("far").addClass("fas");
 			likes = "on";
 		} else {
-			$(this).removeClass("fas").addClass("far");
+			icon.removeClass("fas").addClass("far");
 			likes = "off";
 		}
 
@@ -109,6 +110,19 @@ $(document).ready(function() {
 				}
 			}
 		})
+		.fail(function(xhr){
+			if(likes == "on") {
+				icon.removeClass("fas").addClass("far");
+			} else {
+				icon.removeClass("far").addClass("fas");
+			}
+
+			if(xhr.status == 401) {
+				swal("로그인 후 이용해주세요.");
+			} else {
+				swal("찜하기 처리 중 오류가 발생했습니다.");
+			}
+		})
 	}) // 찜
 
 
@@ -122,11 +136,11 @@ $(document).ready(function() {
 		if(isAdmin) {
 			return;
 		}
-//		const isOpen = $("#is_open").data("is_open");
-//		if(!isOpen) {
-//			swal("지금은 준비중이에요");
-//			return;
-//		}
+		const isOpen = $("#is_open").data("is_open");
+		if(!isOpen) {
+			swal("지금은 준비중이에요");
+			return;
+		}
 		const foodId = $(this).find(".food_id").val();
 		$.ajax({
 			url: "/foodOption",
