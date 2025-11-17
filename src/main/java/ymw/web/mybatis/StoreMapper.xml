@@ -229,6 +229,12 @@ FROM	(SELECT S.*,
         ORDER_NUM = TO_NUMBER(#{orderNum})    
 </update>
 
+<delete id="reviewDelete">
+    DELETE FROM BM_REVIEW
+    WHERE ORDER_NUM = #{orderNum }
+    AND USER_ID = #{userId }
+</delete>
+
 <insert id="addLikes">
     INSERT INTO BM_LIKES (
         USER_ID
@@ -245,5 +251,95 @@ FROM	(SELECT S.*,
     STORE_ID = #{storeId }			
 </delete>
 
+<select id="likesList" resultType="Store">
+    WITH R_COUNT AS (
+       SELECT  R.STORE_ID 
+               ,ROUND(R.SCORE, 1) SCORE
+               ,R.REVIEW_COUNT
+               ,R.BOSS_COMMENT_COUNT 
+       FROM 
+               (SELECT STORE_ID
+                       ,AVG(SCORE) SCORE
+                       ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                       ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT 
+               FROM    BM_REVIEW GROUP BY STORE_ID ) R  
+   ),
+   STORE AS (
+       SELECT  	S.*
+                   ,T.*
+                   ,L.USER_ID
+                   ,L.LIKES_DATE
+                   ,CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+       FROM		BM_STORE S
+       LEFT JOIN 	R_COUNT T
+       ON	 		S.ID = T.STORE_ID
+       LEFT JOIN 	BM_LIKES L
+       ON 			S.ID = L.STORE_ID 
+       WHERE 		USER_ID = #{userId }
+   )
+   
+   SELECT * FROM
+       (SELECT 	C.*
+                   ,'true' IS_OPEN
+       FROM    	STORE C 
+       WHERE    	(TO_CHAR(SYSTIMESTAMP, 'HH24') 
+       BETWEEN 	OPENING_TIME 
+       AND     	OPENING_TIME + BS_TIME)
+   UNION ALL
+       SELECT  	C.*
+                   ,'false' IS_OPEN 
+       FROM    	STORE C 
+       WHERE 	  	(TO_CHAR(SYSTIMESTAMP, 'HH24') 
+       NOT BETWEEN OPENING_TIME 
+       AND     	OPENING_TIME + BS_TIME )
+       ) 
+   ORDER BY LIKES_DATE DESC
+   </select>
+
+<select id="storeSearch" resultType="Store">
+    WITH R_COUNT AS (
+       SELECT  R.STORE_ID 
+               ,ROUND(R.SCORE, 1) SCORE
+               ,R.REVIEW_COUNT
+               ,R.BOSS_COMMENT_COUNT 
+       FROM 
+               (SELECT STORE_ID
+                       ,AVG(SCORE) SCORE
+                       ,COUNT(REVIEW_CONTENT) REVIEW_COUNT
+                       ,COUNT(BOSS_COMMENT) BOSS_COMMENT_COUNT 
+               FROM    BM_REVIEW GROUP BY STORE_ID ) R  
+   ),
+   STORE AS (
+       SELECT  	S.*
+                   ,T.*
+                   ,CASE WHEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) != 0 THEN MOD(24 - S.OPENING_TIME + S.CLOSING_TIME, 24) ELSE 24 END BS_TIME
+       FROM		BM_STORE S
+       LEFT JOIN 	R_COUNT T
+       ON	 		S.ID = T.STORE_ID
+       WHERE       STORE_ADDRESS1 LIKE '${address}%'
+       AND         STORE_NAME LIKE '%${keyword}%'
+   )
+   
+   SELECT * FROM 
+       (SELECT ROWNUM RN,
+               COUNT(*) OVER() list_count, 
+               RESULT.* 
+       FROM   
+               (SELECT C.* 
+                       ,'true' IS_OPEN 
+               FROM    STORE C  
+               WHERE   TO_CHAR(SYSTIMESTAMP, 'HH24') BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME
+               
+               UNION ALL
+                
+               SELECT C.*
+                      ,'false' IS_OPEN 
+               FROM   STORE C  
+               WHERE  TO_CHAR(SYSTIMESTAMP, 'HH24') NOT BETWEEN OPENING_TIME AND OPENING_TIME + BS_TIME 
+               ) RESULT
+        ) 
+   WHERE RN BETWEEN #{firstList } AND ${lastList }	 
+       
+   </select>
 
 </mapper>

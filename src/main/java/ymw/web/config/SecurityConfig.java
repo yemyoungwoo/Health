@@ -52,7 +52,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 			.failureHandler(loginFail)
 		.and()
 			.logout()
-			.logoutSuccessUrl("/mypage")
+			.logoutSuccessUrl("/myPage")
 			.invalidateHttpSession(true) //세션 삭제
 			.deleteCookies("remember-me", "JSESSIONID") //자동 로그인 쿠키, Tomcat이 발급한 세션 유지 쿠키 삭제
 		.and()

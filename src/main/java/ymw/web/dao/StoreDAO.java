@@ -23,10 +23,16 @@ public interface StoreDAO {
 	List<Review> reviewList(long id);
 	
 	void reviewModify(Review review);
+	
+	int reviewDelete(long orderNum, long userId);
 
 	void addLikes(Map<String, Long> map);
 
 	void deleteLikes(Map<String, Long> map);
 	
 	Store storeDetail(long storeId, long userId);
+	
+	List<Store> likesList(long userId);
+	
+	List<Store> storeSearch(Map<String, Object> map);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ymw.web.dao.StoreDAO;
 import ymw.web.dto.Food;
 import ymw.web.dto.FoodOption;
+import ymw.web.dto.Page;
 import ymw.web.dto.Review;
 import ymw.web.dto.Store;
 import ymw.web.dto.StoreDetail;
@@ -58,6 +59,11 @@ public class StoreServiceImp implements StoreService {
 	}
 	
 	@Override
+	public int reviewDelete(long orderNum, long userId) {
+		return storeDAO.reviewDelete(orderNum, userId);
+	}
+	
+	@Override
 	public void likes(long storeId, String likes, long userId) {
 	    Map<String, Long> map = new HashMap<>();
 	    map.put("storeId", storeId);
@@ -76,5 +82,21 @@ public class StoreServiceImp implements StoreService {
 	    List<Review> reviewList = storeDAO.reviewList(storeId);
 	     
 	    return new StoreDetail(storeInfo, foodList, reviewList);
+	}
+	
+	@Override
+	public List<Store> likesList(long userId) {
+		return storeDAO.likesList(userId);
+	}
+	
+	@Override
+	public List<Store> storeSearch(String keyword, int address, Page p) {
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("keyword", keyword);
+	    map.put("address", address);
+	    map.put("firstList", p.getFirstList());
+	    map.put("lastList", p.getLastList());
+	    
+	    return storeDAO.storeSearch(map);
 	}
 }

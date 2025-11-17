@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
 import ymw.web.util.FoodPriceCalc;
 
+@CrossOrigin(origins = "*")
 @Controller
 public class CartController {
 	

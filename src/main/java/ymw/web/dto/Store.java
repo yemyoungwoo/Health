@@ -35,4 +35,5 @@ public class Store {
 	private int score5; // 리뷰 5점	
 	private String isOpen;
 	private int isLikes;	// 0 찜x, 1 찜o
+	private int listCount;	// 매장 수
 }

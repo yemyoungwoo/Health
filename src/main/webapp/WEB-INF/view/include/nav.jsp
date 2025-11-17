@@ -3,9 +3,9 @@
 <nav>
     <ul>
         <li><a href="/"></a></li>
-        <li><a href="/Gym/search"></a></li>
-        <li><a href="/likes/Gym"></a></li>
-        <li><a href="/ReservationList"></a></li>
+        <li><a href="/store/search"></a></li>
+        <li><a href="/store/likes"></a></li>
+        <li><a href="/orderList"></a></li>
         <li><a href="/myPage"></a></li>
     </ul>
 </nav>

@@ -190,6 +190,5 @@
     ON			o.order_num = r.order_num
 	WHERE		o.order_num = #{orderNum }
 	ORDER BY	o.order_date desc
-	WHERE R BETWEEN #{firstList } AND #{lastList }
 	</select>
 </mapper>

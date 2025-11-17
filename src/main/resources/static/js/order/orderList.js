@@ -99,4 +99,37 @@ $(document).ready(function() {
 		location.href = "/orderListDetail/" + orderNum;
 	});
 
+	$(".review_delete").click(function() {
+		const orderNum = $(this).siblings(".order_num").val();
+
+		swal({
+			title: "리뷰를 삭제할까요?",
+			text: "삭제 후에는 복구할 수 없습니다.",
+			buttons: ["취소", "삭제"],
+			dangerMode: true
+		}).then(function(isDelete) {
+			if (!isDelete) {
+				return;
+			}
+
+			$.ajax({
+				url: "/store/reviewDelete",
+				type: "POST",
+				data: { orderNum: orderNum }
+			})
+			.done(function() {
+				location.reload();
+			})
+			.fail(function(xhr) {
+				if (xhr.status === 401) {
+					swal("로그인이 필요합니다.");
+				} else if (xhr.status === 403) {
+					swal("삭제할 수 있는 리뷰가 없습니다.");
+				} else {
+					swal("리뷰 삭제 중 오류가 발생했습니다.");
+				}
+			});
+		});
+	});
+
 }); // ready

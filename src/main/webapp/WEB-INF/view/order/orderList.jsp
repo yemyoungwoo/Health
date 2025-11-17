@@ -82,6 +82,7 @@
 		                        	<input type="hidden" value="${orderList[i].reviewContent }" class="review_content" >
 		                        	<input type="hidden" value="${orderList[i].score }" class="review_score" >
 		                        	<input type="hidden" value="${orderList[i].reviewImg}" class="review_img" name="store_img">
+		                        	<button type="button" class="review_delete">리뷰 삭제</button>
 	                        	</c:if>
 		                        	
 	                        </c:if>

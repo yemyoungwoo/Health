@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import ymw.web.service.OrderService;
 import ymw.web.util.CreateOrderNum;
 import ymw.web.util.FoodInfoFromJson;
 
+@CrossOrigin(origins = "*")
 @Controller
 public class OrderController {
 	
