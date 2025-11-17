@@ -13,6 +13,7 @@ public class Review {
 	private String orderNum; 
 	private long storeId;
 	private String storeName;
+	private String storeImg;
 	private String reviewContent;
 	private String bossComment;
 	private Date regiDate;

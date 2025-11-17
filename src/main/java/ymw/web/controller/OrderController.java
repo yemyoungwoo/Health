@@ -28,7 +28,6 @@ import ymw.web.service.OrderService;
 import ymw.web.util.CreateOrderNum;
 import ymw.web.util.FoodInfoFromJson;
 
-@CrossOrigin(origins = "*")
 @Controller
 public class OrderController {
 	

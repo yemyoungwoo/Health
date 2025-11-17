@@ -342,4 +342,21 @@ FROM	(SELECT S.*,
        
    </select>
 
+<select id="userReviewList" resultType="Review">
+    SELECT  r.order_num,
+            r.store_id,
+            r.review_content,
+            r.regi_date,
+            r.score,
+            r.review_img,
+            r.user_id,
+            s.store_name,
+            s.store_img
+    FROM    BM_REVIEW r
+    LEFT JOIN BM_STORE s
+           ON r.store_id = s.id
+    WHERE   r.user_id = #{userId }
+    ORDER BY r.regi_date DESC
+</select>
+
 </mapper>

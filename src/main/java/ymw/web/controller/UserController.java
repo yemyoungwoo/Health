@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +22,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ymw.web.dto.Join;
+import ymw.web.dto.Review;
 import ymw.web.dto.User;
+import ymw.web.login.LoginService;
+import ymw.web.service.StoreService;
 import ymw.web.service.UserService;
 
-@CrossOrigin(origins = "*")
 @Controller
 public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private StoreService storeService;
 	
 	@Autowired
 	private BCryptPasswordEncoder pwdEncoder;
@@ -40,6 +46,19 @@ public class UserController {
 	@GetMapping("/myPage")
 	public String myPage() {
 		return "user/myPage";
+	}
+	
+	@GetMapping("/user/myReview")
+	public String myReview(@AuthenticationPrincipal LoginService user, Model model) {
+		if (user == null) {
+			return "redirect:/login";
+		}
+		
+		long userId = user.getUser().getId();
+		List<Review> reviewList = storeService.userReviewList(userId);
+		model.addAttribute("reviewList", reviewList);
+		
+		return "user/myReview";
 	}
 
 	@GetMapping("/login")
@@ -129,6 +148,10 @@ public class UserController {
 		} catch (Exception e) {
 			return "오류 발생: " + e.getMessage();
 		}
+	}
+	@GetMapping("/user/myInfo")
+	public String myInfo() {
+		return "user/myInfo";
 	}
 
 }

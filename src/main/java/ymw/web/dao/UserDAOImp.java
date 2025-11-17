@@ -28,5 +28,10 @@ public class UserDAOImp implements UserDAO {
 		
 		return sql.selectOne("user.overlapCheck" ,map);
 	}
+	
+	@Override
+	public void modifyInfo(Map<String, Object> map) {
+	    sql.update("user.modifyInfo", map);
+	}
  
 }

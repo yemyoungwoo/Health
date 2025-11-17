@@ -89,4 +89,9 @@ public class StoreDAOImp implements StoreDAO {
 	public List<Store> storeSearch(Map<String, Object> map) {
 		return sql.selectList("store.storeSearch", map);
 	}
+	
+	@Override
+	public List<Review> userReviewList(long userId) {
+		return sql.selectList("store.userReviewList", userId);
+	}
 }

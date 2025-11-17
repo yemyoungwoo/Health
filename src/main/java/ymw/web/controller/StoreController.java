@@ -29,7 +29,6 @@ import ymw.web.service.StoreService;
 import ymw.web.util.CookieManager;
 import ymw.web.util.UploadFile;
 
-@CrossOrigin(origins = "*")
 @Controller
 public class StoreController {
 

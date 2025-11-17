@@ -18,7 +18,6 @@ import ymw.web.dto.Cart;
 import ymw.web.dto.CartList;
 import ymw.web.util.FoodPriceCalc;
 
-@CrossOrigin(origins = "*")
 @Controller
 public class CartController {
 	

@@ -53,4 +53,22 @@
 		SET PASSWORD = #{password }
 		WHERE USERNAME = #{username }
 	</update>
+	
+	<update id="modifyInfo">
+    UPDATE BM_USER SET
+    
+    <if test="valueType == 'password'">
+        PASSWORD = #{value }
+    </if>
+    
+    <if test="valueType == 'nickname'">
+        NICKNAME = #{value }		
+    </if>
+    
+    <if test="valueType == 'phone'">
+        PHONE = #{value }		
+    </if>
+    
+    WHERE	USERNAME = #{username } 
+</update>
 </mapper>

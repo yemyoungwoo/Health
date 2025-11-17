@@ -62,7 +62,7 @@
 		    		
 		    		
 		    		<div>
-						<a href="/likes/gym">
+						<a href="/store/likes">
 							<span class="img_box">
 								<img src="/img/icon44.png" alt="찜한 헬스장">
 							</span>

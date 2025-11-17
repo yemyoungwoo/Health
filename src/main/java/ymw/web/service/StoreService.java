@@ -33,4 +33,6 @@ public interface StoreService {
 	List<Store> likesList(long userId);
 	
 	List<Store> storeSearch(String keyword, int address, Page p);
+	
+	List<Review> userReviewList(long userId);
 }

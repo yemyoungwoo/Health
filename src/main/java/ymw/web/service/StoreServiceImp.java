@@ -90,6 +90,11 @@ public class StoreServiceImp implements StoreService {
 	}
 	
 	@Override
+	public List<Review> userReviewList(long userId) {
+		return storeDAO.userReviewList(userId);
+	}
+	
+	@Override
 	public List<Store> storeSearch(String keyword, int address, Page p) {
 	    Map<String, Object> map = new HashMap<>();
 	    map.put("keyword", keyword);

@@ -35,4 +35,6 @@ public interface StoreDAO {
 	List<Store> likesList(long userId);
 	
 	List<Store> storeSearch(Map<String, Object> map);
+	
+	List<Review> userReviewList(long userId);
 }
