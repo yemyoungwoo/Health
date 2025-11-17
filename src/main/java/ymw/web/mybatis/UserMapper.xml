@@ -71,4 +71,31 @@
     
     WHERE	USERNAME = #{username } 
 </update>
+
+<select id="findUsernameByEmail" resultType="String">
+    SELECT USERNAME
+    FROM BM_USER
+    WHERE EMAIL = #{email }
+</select>
+
+<select id="findUserByUsernameAndEmail" resultType="User">
+    SELECT 
+        ID,
+        USERNAME,
+        PASSWORD,
+        EMAIL,
+        NICKNAME,
+        PHONE,
+        RATING,
+        ROLE
+    FROM BM_USER
+    WHERE USERNAME = #{username }
+    AND EMAIL = #{email }
+</select>
+
+<update id="updateTempPassword">
+    UPDATE BM_USER
+    SET PASSWORD = #{password }
+    WHERE USERNAME = #{username }
+</update>
 </mapper>

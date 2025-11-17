@@ -10,13 +10,14 @@ import javax.validation.Valid;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -109,6 +110,42 @@ public class UserController {
 
 		System.out.println(count);
 		return count;
+	}
+	
+	// 아이디 찾기 페이지
+	@GetMapping("/findUsername")
+	public String findUsernamePage() {
+		return "user/findUsername";
+	}
+	
+	// 아이디 찾기 처리
+	@ResponseBody
+	@PostMapping("/findUsername")
+	public ResponseEntity<String> findUsername(String email) {
+		try {
+			userService.findUsername(email);
+			return new ResponseEntity<>("아이디가 이메일로 전송되었습니다.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	// 비밀번호 찾기 페이지
+	@GetMapping("/findPassword")
+	public String findPasswordPage() {
+		return "user/findPassword";
+	}
+	
+	// 비밀번호 찾기 처리
+	@ResponseBody
+	@PostMapping("/findPassword")
+	public ResponseEntity<String> findPassword(String username, String email) {
+		try {
+			userService.findPassword(username, email);
+			return new ResponseEntity<>("임시 비밀번호가 이메일로 전송되었습니다.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	// 임시: 기존 사용자 비밀번호를 BCrypt로 변환하는 유틸리티
